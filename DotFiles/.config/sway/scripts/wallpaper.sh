@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Create an array of image paths safely
-mapfile -t img < <(find "/home/omarhanykasban/Pictures/Windows 7 Aero Blue lite v2 x86/Aero Blue + Glass" -type f -exec file --mime-type {} + | awk -F: '$2 ~ /image\// {print $1}')
+mapfile -t img < <(find "/home/omarhanykasban/Pictures/Pikachu" -type f -exec file --mime-type {} + | awk -F: '$2 ~ /image\// {print $1}')
 
 while true; do
   # Pick a random image
