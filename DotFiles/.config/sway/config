@@ -8,11 +8,9 @@ set $mod Mod4
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 include ~/.config/sway/configs/autostart
 include ~/.config/sway/configs/theme-Nordic-red
-#include ~/.config/sway/configs/input
 #include ~/.config/sway/configs/laptop
 include ~/.config/sway/configs/keybinds-qwerty
 #include ~/.config/sway/configs/keybinds-dvorak
-#include ~/.config/sway/configs/monitor
 include ~/.config/sway/configs/hardware
 include ~/.config/sway/configs/windowrules
 
