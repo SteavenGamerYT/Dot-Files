@@ -1,6 +1,6 @@
 [Context]
-devices=input;
-filesystems=xdg-run/app/com.discordapp.Discord:create;
+devices=input
+filesystems=xdg-config/MangoHud:ro;xdg-run/app/com.discordapp.Discord:create
 
 [Environment]
 MANGOHUD=1

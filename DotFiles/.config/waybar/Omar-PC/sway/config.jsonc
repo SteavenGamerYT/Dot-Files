@@ -12,8 +12,8 @@
     ],
     "modules-right": [
         "custom/disks",
-        "custom/nvidia-gpuusage",
-        "custom/nvidia-vramusage",
+//        "custom/nvidia-gpuusage",
+//        "custom/nvidia-vramusage",
         "custom/gpuusage",
         "custom/vramusage",
         "custom/cpu",
