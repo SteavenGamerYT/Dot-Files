@@ -8,7 +8,7 @@ output "HDMI-A-2" {
     adaptive_sync off
     dpms on
 }
-output "HDMI-A-1" {
+output "DP-1" {
     mode  1920x1080@100.0Hz
     pos 0 768
     transform normal
@@ -19,7 +19,7 @@ output "HDMI-A-1" {
     color_profile icc ~/.config/sway/callibrated.icm
 }
 workspace 1 output HDMI-A-2
-workspace 2 output HDMI-A-1
+workspace 2 output DP-1
 
 # GTX 1650
 output "DVI-D-1" disable
