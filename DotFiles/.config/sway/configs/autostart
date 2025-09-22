@@ -27,6 +27,8 @@ exec --no-startup-id uwsm app -- sleep 4 && coolercontrol
 exec --no-startup-id uwsm app -- sleep 4 && openrgb --startminimized
 exec --no-startup-id uwsm app -- xwaylandvideobridge
 exec --no-startup-id uwsm app -- ~/.config/waybar/launch.sh
+exec swaymsg workspace 2
+exec --no-startup-id uwsm app -- conky
 
 # GUI apps (Starts in system tray)
 exec --no-startup-id uwsm app -- sleep 4 && flatpak run com.discordapp.Discord --start-minimized

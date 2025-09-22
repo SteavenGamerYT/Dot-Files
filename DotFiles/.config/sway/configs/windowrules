@@ -75,3 +75,6 @@ for_window [class="steam_app_.*"] inhibit_idle open
 for_window [class="Ryujinx"] inhibit_idle open
 for_window [app_id="rpcs3"] inhibit_idle open
 for_window [class="dolphin-emu"] inhibit_idle open
+
+
+for_window [class="Conky"] move container to output DP-1

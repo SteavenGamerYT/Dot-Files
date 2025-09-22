@@ -1,13 +1,4 @@
 # Rx 7600 XT
-output "HDMI-A-2" {
-    mode  1366x768@59.79Hz
-    pos 0 0
-    transform normal
-    scale 1.0
-    scale_filter nearest
-    adaptive_sync off
-    dpms on
-}
 output "DP-1" {
     mode  1920x1080@100.0Hz
     pos 0 768
@@ -18,8 +9,17 @@ output "DP-1" {
     dpms on
     color_profile icc ~/.config/sway/callibrated.icm
 }
-workspace 1 output HDMI-A-2
+output "HDMI-A-2" {
+    mode  1366x768@59.79Hz
+    pos 0 0
+    transform normal
+    scale 1.0
+    scale_filter nearest
+    adaptive_sync off
+    dpms on
+}
 workspace 2 output DP-1
+workspace 1 output HDMI-A-2
 
 # GTX 1650
 output "DVI-D-1" disable
