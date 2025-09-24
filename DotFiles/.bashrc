@@ -1,3 +1,8 @@
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
 # Sourcing custom settings with error handling
 source_custom() {
   # Check if the file is readable
