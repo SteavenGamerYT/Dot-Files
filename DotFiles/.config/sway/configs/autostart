@@ -14,17 +14,18 @@ exec_always --no-startup-id uwsm app -- ~/.config/sway/scripts/startup-sound.sh
 # Autostart Applications
 exec --no-startup-id uwsm app -- swaync
 exec --no-startup-id uwsm app -- ~/.config/sway/scripts/wallpaper.sh
-exec --no-startup-id uwsm app --  swayidle -w \
-          timeout 300 '~/.config/sway/scripts/lockscreen.sh' \
-#          timeout 600 'systemctl suspend' \
-          before-sleep '~/.config/sway/scripts/lockscreen.sh'
+exec --no-startup-id uwsm app -- swayidle -w \
+    timeout 300 '~/.config/sway/scripts/lockscreen.sh' \
+    timeout 600 'swaymsg "output * dpms off"' \
+    resume 'swaymsg "output * dpms on"' \
+    before-sleep '~/.config/sway/scripts/lockscreen.sh'
 exec --no-startup-id uwsm app -- nm-applet --indicator
 exec --no-startup-id uwsm app -- ~/.config/sway/scripts/kwallet
-exec --no-startup-id uwsm app -- lxqt-policykit-agent
+exec --no-startup-id uwsm app -- sleep 4 && lxqt-policykit-agent
 exec --no-startup-id uwsm app -- kdeconnectd
 exec --no-startup-id uwsm app -- kdeconnect-indicator
 exec --no-startup-id uwsm app -- sleep 4 && coolercontrol
-exec --no-startup-id uwsm app -- sleep 4 && openrgb --startminimized
+exec --no-startup-id uwsm app -- sleep 4 && openrgb --startminimized --profile "SteavenGamerYT"
 exec --no-startup-id uwsm app -- xwaylandvideobridge
 exec --no-startup-id uwsm app -- ~/.config/waybar/launch.sh
 exec swaymsg workspace 2

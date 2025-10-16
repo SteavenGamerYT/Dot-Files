@@ -9,6 +9,7 @@ done
 fi
 
 export XDG_SCREENSHOTS_DIR="$HOME/Pictures/Screenshots"  # Directory for storing screenshots
+export GRIMSHOT_FILENAME_FORMAT="$(date '+%Y-%m-%d_%H-%M-%S')"
 export EDITOR=nano
 
 # Check the hostname and set the MANGOHUD_CONFIG variable accordingly

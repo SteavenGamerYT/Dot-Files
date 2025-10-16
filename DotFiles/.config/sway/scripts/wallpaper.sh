@@ -8,7 +8,7 @@ while true; do
   selected_image="${img[RANDOM % ${#img[@]}]}"
 
   # Save the wallpaper path
-  echo "WALLPAPER_PATH=$selected_image" > ~/.config/hypr/wallpaper.conf
+  echo "WALLPAPER_PATH=$selected_image" > ~/.config/sway/wallpaper.conf
 
   # Get the current swaybg PID (if any)
   swaybg_pid=$(pgrep -x swaybg)

@@ -1,0 +1,2 @@
+[Context]
+filesystems=xdg-config/MangoHud:ro;~/Games/Games/Honkai Star Rail:rw;~/Games/Games/Genshin Impact:rw

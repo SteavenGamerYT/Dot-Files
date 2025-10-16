@@ -13,7 +13,7 @@ fi
 echo "Detected hostname: $HOSTNAME"
 
 if [[ $HOSTNAME == "Omar-PC" ]]; then
-    xrandr --output HDMI-A-1 --primary
+    xrandr --output DP-1 --primary
     input-remapper-control --command start --device "SINOWEALTH Wired Gaming Mouse" --preset "mouse extra buttons"
     systemctl --user restart audio
 elif [[ $HOSTNAME == "Omar-GamingLaptop" ]]; then

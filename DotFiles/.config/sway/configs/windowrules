@@ -76,5 +76,7 @@ for_window [class="Ryujinx"] inhibit_idle open
 for_window [app_id="rpcs3"] inhibit_idle open
 for_window [class="dolphin-emu"] inhibit_idle open
 
+# Gamescope
+for_window [app_id="gamescope"] inhibit_idle open
 
 for_window [class="Conky"] move container to output DP-1

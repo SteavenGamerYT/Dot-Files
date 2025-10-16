@@ -7,7 +7,7 @@ output "DP-1" {
     scale_filter nearest
     adaptive_sync on
     dpms on
-    color_profile icc ~/.config/sway/callibrated.icm
+    color_profile icc ~/.config/sway/display-color-profile/msi-mp225-pro.icm
 }
 output "HDMI-A-2" {
     mode  1366x768@59.79Hz
@@ -20,6 +20,7 @@ output "HDMI-A-2" {
 }
 workspace 2 output DP-1
 workspace 1 output HDMI-A-2
+exec_always --no-startup-id uwsm app -- xrandr --output DP-1 --primary
 
 # GTX 1650
 output "DVI-D-1" disable

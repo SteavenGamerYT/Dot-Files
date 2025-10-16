@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# Run hyprctl command to get keyboard information,
-# extract active_keymap, convert to lowercase,
-# and get the first two characters
 keyboard_lang=$(~/.config/waybar/sway/scripts/get-lang.sh)
 
 # Check if the keyboard language is "en"
