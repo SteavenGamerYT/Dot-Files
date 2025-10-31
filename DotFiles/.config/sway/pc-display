@@ -9,6 +9,16 @@ output "DP-1" {
     dpms on
     color_profile icc ~/.config/sway/display-color-profile/msi-mp225-pro.icm
 }
+output "DP-2" {
+    mode 1920x1080@60.0Hz
+    pos 1920 768
+    transform normal
+    scale 1.0
+    scale_filter nearest
+    adaptive_sync off
+    dpms on
+    color_profile icc ~/.config/sway/display-color-profile/benq-gl2460.icm
+}
 output "HDMI-A-2" {
     mode  1366x768@59.79Hz
     pos 0 0
@@ -19,6 +29,7 @@ output "HDMI-A-2" {
     dpms on
 }
 workspace 2 output DP-1
+workspace 3 output DP-2
 workspace 1 output HDMI-A-2
 exec_always --no-startup-id uwsm app -- xrandr --output DP-1 --primary
 
