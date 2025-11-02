@@ -27,7 +27,7 @@ export ELECTRON_OZONE_PLATFORM_HINT=auto
 if [ "$XDG_SESSION_DESKTOP" = "none+i3" ] ||  [ "$XDG_SESSION_DESKTOP" = "i3" ] || [ "$XDG_SESSION_DESKTOP" = "sway" ] || [ "$XDG_SESSION_DESKTOP" = "Hyprland" ]; then
   
   # Set the GTK theme to use for applications
-  export GTK_THEME=WhiteSur-Dark-red
+  export GTK_THEME=Mint-Y-Dark-Red
 
   # Set the Xcursor theme
   export XCURSOR_THEME=WhiteSur-cursors
