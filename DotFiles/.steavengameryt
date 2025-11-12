@@ -140,6 +140,7 @@ alias yta-opus="yt-dlp --extract-audio --audio-format opus --embed-metadata --em
 alias yta-vorbis="yt-dlp --extract-audio --audio-format vorbis --embed-metadata --embed-thumbnail "  # Extract Vorbis audio from video
 alias yta-wav="yt-dlp --extract-audio --audio-format wav --embed-metadata --embed-thumbnail "  # Extract WAV audio from video
 alias ytv-best="yt-dlp -f bestvideo+bestaudio --embed-metadata --embed-thumbnail --embed-chapters --audio-multistreams"  # Download best quality video and audio
+alias ytv-best-1080p='yt-dlp -f "bestvideo[height<=1080]+bestaudio" --embed-metadata --embed-thumbnail --embed-chapters --audio-multistreams'
 alias ytv-best-mp4='yt-dlp -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" --embed-metadata --embed-thumbnail --embed-chapters --audio-multistreams'  # Download best MP4 video and audio
 alias ytv-best-mp4-h264='yt-dlp -f "bestvideo[ext=mp4][vcodec^=avc1]+bestaudio[ext=m4a]/best[ext=mp4][vcodec^=avc1]/best[vcodec^=avc1]" --embed-metadata --embed-thumbnail --embed-chapters --audio-multistreams'
 alias ytv-best-mp4-1080p='yt-dlp -f "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" --embed-metadata --embed-thumbnail --embed-chapters'  # Download 1080p MP4 video and audio
