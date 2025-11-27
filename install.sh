@@ -6,7 +6,7 @@ mkdir ~/.ssh
 mkdir ~/.config
 mkdir -p ~/.var/app/io.mpv.Mpv/config
 mkdir -p ~/.local/share/flatpak
-rm -rf ~/.steavengameryt ~/.bash-default ~/.zshrc ~/.bashrc ~/.profile ~/.zshenv ~/.p10k.zsh ~/.config/i3 ~/.config/picom ~/.config/neofetch ~/.config/polybar ~/.config/kitty ~/.config/BetterDiscord ~/.config/hypr ~/.config/waybar ~/.config/starship.toml ~/.config/ulauncher ~/.config/yay ~/.config/MangoHud ~/.ssh/config ~/.config/fish ~/.config/dunst ~/.config/swaylock ~/.config/rofi ~/.config/starship ~/.config/swaync ~/.zprofile ~/.config/fastfetch ~/.config/betterlockscreen ~/.config/alacritty ~/.config/sway ~/.config/xdg-desktop-portal ~/.config/sxhkd ~/.config/bspwm ~/.local/share/nemo ~/.config/nemo ~/.config/mpv ~/.var/app/io.mpv.Mpv/config/mpv ~/.local/share/flatpak/overrides ~/.config/Kvantum ~/.config/gtk-2.0 ~/.config/gtk-3.0 ~/.config/gtk-4.0 ~/.nanorc ~/.config/conky
+rm -rf ~/.steavengameryt ~/.bash-default ~/.zshrc ~/.bashrc ~/.profile ~/.zshenv ~/.p10k.zsh ~/.config/i3 ~/.config/picom ~/.config/neofetch ~/.config/polybar ~/.config/kitty ~/.config/BetterDiscord ~/.config/hypr ~/.config/waybar ~/.config/starship.toml ~/.config/ulauncher ~/.config/yay ~/.config/MangoHud ~/.ssh/config ~/.config/fish ~/.config/dunst ~/.config/swaylock ~/.config/rofi ~/.config/starship ~/.config/swaync ~/.zprofile ~/.config/fastfetch ~/.config/betterlockscreen ~/.config/alacritty ~/.config/sway ~/.config/xdg-desktop-portal ~/.config/sxhkd ~/.config/bspwm ~/.local/share/nemo ~/.config/nemo ~/.config/mpv ~/.var/app/io.mpv.Mpv/config/mpv ~/.local/share/flatpak/overrides ~/.config/Kvantum ~/.config/gtk-2.0 ~/.config/gtk-3.0 ~/.config/gtk-4.0 ~/.nanorc ~/.config/conky ~/.config/topgrade.toml
 ln -s ~/DotFiles/.steavengameryt ~/.steavengameryt
 ln -s ~/DotFiles/.bash-default ~/.bash-default
 ln -s ~/DotFiles/.zshrc ~/.zshrc
@@ -47,6 +47,7 @@ ln -s ~/DotFiles/.config/mpv ~/.var/app/io.mpv.Mpv/config/mpv
 ln -s ~/DotFiles/.local/share/flatpak/overrides ~/.local/share/flatpak/overrides
 ln -s ~/DotFiles/.nanorc ~/.nanorc
 ln -s ~/DotFiles/.config/conky ~/.config/conky
+ln -s ~/DotFiles/.config/topgrade.toml ~/.config/topgrade.toml
 
 ln -s ~/DotFiles/.config/Kvantum ~/.config/Kvantum
 ln -s ~/DotFiles/.config/gtk-2.0 ~/.config/gtk-2.0
