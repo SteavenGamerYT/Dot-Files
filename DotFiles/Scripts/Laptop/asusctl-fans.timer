@@ -1,0 +1,9 @@
+[Unit]
+Description=Run asusctl-fans service every 30 minutes
+
+[Timer]
+OnUnitActiveSec=30min
+Unit=asusctl-fans.service
+
+[Install]
+WantedBy=timers.target

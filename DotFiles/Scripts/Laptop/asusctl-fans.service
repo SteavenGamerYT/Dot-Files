@@ -1,0 +1,11 @@
+[Unit]
+Description=Configure Laptop using asusctl
+After=asusd.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/env bash -c "/home/omarhanykasban/DotFiles/Scripts/Laptop/asusctl-fans.sh || true"
+RemainAfterExit=yes
+
+[Install]
+WantedBy=default.target

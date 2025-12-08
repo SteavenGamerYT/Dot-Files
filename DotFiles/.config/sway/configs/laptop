@@ -1,4 +1,5 @@
-exec = sudo -A rogauracore brightness 3
-#exec = sudo -A rogauracore single_static B48EAD 
-exec = sudo -A rogauracore single_static ff000d
+exec = asusctl -k high
+exec = asusctl aura static 
+exec = asusctl aura static -c ffffff
+exec = asusctl -c 80
 #env = AQ_DRM_DEVICES,/dev/dri/card1:/dev/dri/card0
