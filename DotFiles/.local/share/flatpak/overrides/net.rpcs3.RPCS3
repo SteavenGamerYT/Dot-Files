@@ -1,5 +1,5 @@
 [Context]
-filesystems=xdg-config/MangoHud:ro;~/Games/Roms/PlayStation 3:rw;~/SaveGames/rpcs3:rw
+filesystems=xdg-config/MangoHud:ro;~/Games/Roms/PlayStation 3:rw;~/SaveGames/1-Emulators/RPCS3/rpcs3:rw
 
 [Environment]
 OBS_VKCAPTURE=1

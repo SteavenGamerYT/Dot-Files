@@ -1,2 +1,2 @@
 [Context]
-filesystems=/mnt/nvme/Games/PrismLauncher:rw;xdg-config/MangoHud:ro;~/SaveGames/Minecraft:rw
+filesystems=/mnt/nvme/Games/PrismLauncher:rw;xdg-config/MangoHud:ro;~/SaveGames/2-Linux/Minecraft:rw

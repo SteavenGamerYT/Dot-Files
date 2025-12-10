@@ -1,5 +1,5 @@
 [Context]
-filesystems=~/Games/Roms/Nintendo Switch/Roms:rw;xdg-config/MangoHud:ro;~/SaveGames/Ryujinx:rw
+filesystems=~/Games/Roms/Nintendo Switch/Roms:rw;xdg-config/MangoHud:ro;~/SaveGames/1-Emulators/Ryujinx:rw
 
 [Environment]
 MANGOHUD=1
