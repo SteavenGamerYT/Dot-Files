@@ -22,7 +22,8 @@ exec_always --no-startup-id ~/.config/sway/scripts/headset
 
 # Switch between English (US) and Arabic (Egypt) keyboard layouts
 input type:keyboard {
-        xkb_layout "us,eg,us(dvorak)"
+#        xkb_layout "us,eg,us(dvorak)"
+        xkb_layout "us,eg"
         xkb_options "grp:alt_shift_toggle"
         xkb_numlock enabled
 }
