@@ -1,2 +1,2 @@
 [Context]
-filesystems=/mnt/hdd2/SteamLibrary;/mnt/hdd/SteamLibrary;/mnt/nvme/SteamLibrary;
+filesystems=/mnt/hdd/SteamLibrary:rw;/mnt/hdd2/SteamLibrary:rw;/mnt/hdd3/SteamLibrary:rw;/mnt/hdd4/SteamLibrary:rw;/mnt/nvme/SteamLibrary:rw;/mnt/nvme2/SteamLibrary:rw;

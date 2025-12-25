@@ -1,6 +1,8 @@
 [Context]
 devices=input
-filesystems=xdg-config/MangoHud:ro;xdg-run/app/com.discordapp.Discord:create
+filesystems=xdg-config/MangoHud:ro;xdg-run/app/com.discordapp.Discord:create;xdg-config/vkBasalt:ro
 
 [Environment]
 MANGOHUD=1
+OBS_VKCAPTURE=1
+ENABLE_VKBASALT=1

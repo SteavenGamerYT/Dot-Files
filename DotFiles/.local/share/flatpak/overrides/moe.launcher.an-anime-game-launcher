@@ -1,5 +1,5 @@
 [Context]
-filesystems=/mnt/nvme/The Dawn Winery/moe.launcher.an-anime-game-launcher:rw;xdg-config/MangoHud:ro
+filesystems=/mnt/nvme/The Dawn Winery/moe.launcher.an-anime-game-launcher:rw;xdg-config/MangoHud:ro;xdg-config/vkBasalt:ro
 
 [Environment]
 OBS_VKCAPTURE=1

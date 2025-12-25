@@ -1,7 +1,7 @@
 [Context]
-filesystems=~/SaveGames/1-Emulators/Cemu:rw;xdg-config/MangoHud:ro;~/Games/Roms/Nintendo Wii U:ro
+filesystems=~/SaveGames/1-Emulators/Cemu:rw;xdg-config/MangoHud:ro;~/Games/Roms/Nintendo Wii U:ro;xdg-config/vkBasalt:ro
 
 [Environment]
-MANGOHUD=0
+MANGOHUD=1
 OBS_VKCAPTURE=1
 ENABLE_VKBASALT=1

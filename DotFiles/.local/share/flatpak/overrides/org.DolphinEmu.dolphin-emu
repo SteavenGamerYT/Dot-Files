@@ -1,5 +1,5 @@
 [Context]
-filesystems=~/SaveGames/1-Emulators/Dolphinَ:rw;~/Games/Roms/Nintendo GameCube:ro;xdg-config/MangoHud:ro;/mnt/hdd/Games/Roms/Nintendo Wii:ro;~/Games/Roms/Nintendo Wii:ro;/home/omarhanykasban/SaveGames/1-Emulators/Dolphin:rw;/home/omarhanykasban/Games/Roms/Nintendo GameCube:ro
+filesystems=~/SaveGames/1-Emulators/Dolphinَ:rw;~/Games/Roms/Nintendo GameCube:ro;xdg-config/MangoHud:ro;/mnt/hdd/Games/Roms/Nintendo Wii:ro;~/Games/Roms/Nintendo Wii:ro;/home/omarhanykasban/SaveGames/1-Emulators/Dolphin:rw;/home/omarhanykasban/Games/Roms/Nintendo GameCube:ro;xdg-config/vkBasalt:ro
 
 [Environment]
 OBS_VKCAPTURE=1

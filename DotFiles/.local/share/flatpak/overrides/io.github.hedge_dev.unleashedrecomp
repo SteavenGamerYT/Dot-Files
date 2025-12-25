@@ -1,5 +1,5 @@
 [Context]
-filesystems=xdg-config/MangoHud:ro;~/SaveGames/2-Linux/UnleashedRecomp:rw
+filesystems=xdg-config/MangoHud:ro;~/SaveGames/2-Linux/UnleashedRecomp:rw;xdg-config/vkBasalt:ro
 
 [Environment]
 OBS_VKCAPTURE=1
