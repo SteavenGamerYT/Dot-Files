@@ -7,8 +7,39 @@ set -euo pipefail
 # across different Linux distros and macOS.
 # ==============================================================
 
+# ------------- Terminal Title Handling -------------
+# Default title to restore at the end
+DEFAULT_TITLE="${USER}@${HOSTNAME}: ${PWD}"
+
+# Change terminal title
+set_title() {
+    printf '\033]0;%s\007' "$1"
+}
+
+# Restore default title
+restore_title() {
+    printf '\033]0;%s\007' "$DEFAULT_TITLE"
+}
+
+# Always restore on exit
+trap restore_title EXIT
+
+# ------------- Notifications -------------
+send_notification() {
+    local title="${1:-Cleanup Script}"
+    local message="${2:-All cleanup tasks completed successfully!}"
+    
+    # Check if notify-send is available
+    if command -v notify-send &>/dev/null; then
+        notify-send "$title" "$message"
+    else
+        echo ">>> $title: $message"
+    fi
+}
+
 # ------------- Pacman -------------
 cleanup_pacman() {
+    set_title "Cleaning Pacman"
     echo ">>> Running cleanup for Pacman..."
     local orphans
     orphans=$(pacman -Qtdq || true)
@@ -21,6 +52,7 @@ cleanup_pacman() {
 }
 
 cleanup_pacman_cache() {
+    set_title "Cleaning Pacman Cache"
     echo ">>> Running cleanup for Pacman cache..."
     sudo pacman -Sc --noconfirm
     echo
@@ -28,6 +60,7 @@ cleanup_pacman_cache() {
 
 # ------------- Paru -------------
 cleanup_paru() {
+    set_title "Cleaning Paru"
     echo ">>> Running cleanup for Paru..."
     local orphans
     orphans=$(paru -Qtdq || true)
@@ -40,6 +73,7 @@ cleanup_paru() {
 }
 
 cleanup_paru_cache() {
+    set_title "Cleaning Paru Cache"
     echo ">>> Running cleanup for Paru cache..."
     paru -Sc --noconfirm
     echo
@@ -47,6 +81,7 @@ cleanup_paru_cache() {
 
 # ------------- APT -------------
 cleanup_apt() {
+    set_title "Cleaning APT"
     echo ">>> Running cleanup for APT..."
     sudo apt autoremove --purge -y
     sudo apt clean
@@ -55,6 +90,7 @@ cleanup_apt() {
 
 # ------------- DNF -------------
 cleanup_dnf() {
+    set_title "Cleaning DNF"
     echo ">>> Running cleanup for DNF..."
     sudo dnf autoremove -y
     sudo dnf clean all -y
@@ -63,12 +99,14 @@ cleanup_dnf() {
 
 # ------------- Flatpak -------------
 cleanup_flatpak_user() {
+    set_title "Cleaning Flatpak user"
     echo ">>> Running user-level Flatpak cleanup..."
     flatpak remove --unused -y || true
     echo
 }
 
 cleanup_flatpak_system() {
+    set_title "Cleaning Flatpak system"
     echo ">>> Running system-level Flatpak cleanup..."
     sudo flatpak remove --unused -y || true
     echo
@@ -76,6 +114,7 @@ cleanup_flatpak_system() {
 
 # ------------- Snap -------------
 cleanup_snap() {
+    set_title "Cleaning Snap"
     echo ">>> Running cleanup for Snap..."
     while read -r name rev; do
         sudo snap remove "$name" --revision="$rev"
@@ -85,6 +124,7 @@ cleanup_snap() {
 
 # ------------- NixOS -------------
 cleanup_nixos() {
+    set_title "Cleaning NixOS"
     echo ">>> Running cleanup for NixOS..."
     sudo nix-collect-garbage -d
     echo "NixOS garbage collected."
@@ -95,9 +135,18 @@ cleanup_nixos() {
 
 # ------------- Homebrew -------------
 cleanup_brew() {
+    set_title "Cleaning hOMEbREW"
     echo ">>> Running cleanup for Homebrew..."
     brew autoremove -q
     brew cleanup -s -q
+    echo
+}
+
+# ------------- Docker -------------
+cleanup_docker() {
+    set_title "Cleaning Docker"
+    echo ">>> Running cleanup for Docker..."
+    sudo docker system prune -a --volumes --force
     echo
 }
 
@@ -150,6 +199,12 @@ else
     echo "Skipping Snap cleanup (not installed)."
 fi
 
+if command -v docker &>/dev/null; then
+    cleanup_docker
+else
+    echo "Skipping Docker cleanup (not installed)."
+fi
+
 if command -v brew &>/dev/null; then
     cleanup_brew
 else
@@ -157,3 +212,4 @@ else
 fi
 
 echo ">>> All cleanup tasks complete!"
+send_notification "Cleanup Complete" "All cleanup tasks have finished successfully."
