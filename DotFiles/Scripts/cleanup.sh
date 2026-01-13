@@ -135,7 +135,7 @@ cleanup_nixos() {
 
 # ------------- Homebrew -------------
 cleanup_brew() {
-    set_title "Cleaning hOMEbREW"
+    set_title "Cleaning HomeBrew"
     echo ">>> Running cleanup for Homebrew..."
     brew autoremove -q
     brew cleanup -s -q
