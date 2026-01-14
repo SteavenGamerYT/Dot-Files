@@ -25,7 +25,7 @@ pactl set-sink-mute alsa_output.pci-0000_03_00.1.pro-output-8 1
 pactl set-sink-mute alsa_output.pci-0000_03_00.1.pro-output-9 1
 
 # Change Speekers Audio to 20% to prevent loud noise on startup
-pactl set-sink-volume alsa_output.pci-0000_0c_00.6.analog-stereo 20%
+pactl set-sink-volume alsa_output.pci-0000_0a_00.6.analog-stereo 20%
 
 # Set Speekers as default for Audio
-pactl set-default-sink alsa_output.pci-0000_0c_00.6.analog-stereo
+pactl set-default-sink alsa_output.pci-0000_0a_00.6.analog-stereo
