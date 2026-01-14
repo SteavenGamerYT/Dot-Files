@@ -12,8 +12,8 @@ bindsym $mod+Return uwsm app -- exec kitty
 bindsym $mod+x exec uwsm app -- kitty
 bindsym $mod+b exec uwsm app -- flatpak run io.gitlab.librewolf-community
 bindsym $mod+z exec uwsm app -- nemo
-#bindsym $mod+slash exec uwsm app -- looking-glass-client
-bindsym $mod+slash exec uwsm app -- ~/VMs/freerdp.sh
+bindsym $mod+slash exec uwsm app -- looking-glass-client
+#bindsym $mod+slash exec uwsm app -- ~/VMs/freerdp.sh
 bindsym $mod+period exec uwsm app -- scrcpy
 bindsym $mod+Shift+q kill
 bindsym $mod+d exec uwsm app -- ~/.config/rofi/launcher/launcher.sh
