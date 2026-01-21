@@ -17,7 +17,7 @@ case "$(hostname)" in
     Omar-PC) export MANGOHUD_CONFIG="preset=5" ;;
     Omar-Laptop) export MANGOHUD_CONFIG="preset=8" ;;
     Omar-GamingLaptop) export MANGOHUD_CONFIG="preset=7" ;;
-    Hany-Laptop) export MANGOHUD_CONFIG="preset=9" ;;
+    dell-gaminglaptop) export MANGOHUD_CONFIG="preset=9" ;;
 esac
 
 export ELECTRON_OZONE_PLATFORM_HINT=auto

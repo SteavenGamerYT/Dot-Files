@@ -6,7 +6,7 @@ PartOf=pipewire.service pipewire-pulse.service
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/env bash -c "/home/omarhanykasban/DotFiles/Scripts/Audio/audio3.sh || true"
+ExecStart=/usr/bin/env bash -c "/home/omarhanykasban/DotFiles/Scripts/Audio/dell-gaminglaptop/audio.sh || true"
 RemainAfterExit=yes
 
 [Install]
