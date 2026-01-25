@@ -21,7 +21,7 @@ pactl set-sink-volume alsa_output.pci-0000_01_00.1.pro-output-7 20%
 pactl set-sink-volume alsa_output.pci-0000_01_00.1.pro-output-8 20%
 pactl set-sink-volume alsa_output.pci-0000_01_00.1.pro-output-9 20%
 
-# Change Speekers Audio to 20% to prevent loud noise on startup
+# Change Laptop Speekers Audio to 20% to prevent loud noise on startup
 pactl set-sink-volume alsa_output.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__Speaker__sink 20%
 
 # Change PC Speekers Audio to 20% to prevent loud noise on startup
