@@ -14,7 +14,7 @@ for profile in "${PROFILES[@]}"; do
     echo "Applying fan curve to profile: $profile"
     for fan in "${FANS[@]}"; do
         # Set fan curve
-        asusctl fan-curve --mod-profile "$profile" -f "$fan" -D "$FAN_CURVE"
+        asusctl fan-curve --mod-profile "$profile" --fan "$fan" --data "$FAN_CURVE"
     done
     # Enable fan curves for the profile
     asusctl fan-curve --mod-profile "$profile" --enable-fan-curves true
