@@ -1,2 +1,2 @@
 [Context]
-filesystems=~/GitHub:rw;~/GitHub/dot-files:rw
+filesystems=~/.local/share/icons:rw;xdg-config/qt5ct:rw;~/.themes:rw;xdg-config/gtk-3.0:rw;xdg-config/Kvantum:rw;xdg-config/gtkrc:rw;xdg-config/gtkrc-2.0:rw;xdg-config/fontconfig:rw;~/.icons:rw;xdg-config/qt6ct:rw;xdg-config/gtk-4.0:rw;~/GitHub/dot-files:rw;~/.local/share/themes:rw
