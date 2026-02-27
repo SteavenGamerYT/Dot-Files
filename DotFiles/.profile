@@ -1,80 +1,91 @@
-# Loop to add specified directories to the PATH if they exist
-for dir in "$HOME/.bin" "$HOME/.local/bin" "$HOME/Applications" "/var/lib/flatpak/exports/bin" "$HOME/.spicetify" "/home/linuxbrew/.linuxbrew/bin" "/home/linuxbrew/.linuxbrew/sbin"; do
+# ==============================
+# PATH — Add custom directories
+# ==============================
+for dir in \
+  "$HOME/.bin" \
+  "$HOME/.local/bin" \
+  "$HOME/Applications" \
+  "/var/lib/flatpak/exports/bin" \
+  "/home/linuxbrew/.linuxbrew/bin" \
+  "/home/linuxbrew/.linuxbrew/sbin"
+do
   [ -d "$dir" ] && PATH="$dir:$PATH"
 done
+export PATH
 
-# Enable Wayland support in Firefox if the session type is Wayland
- if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+
+# ==============================
+# General Environment
+# ==============================
+export EDITOR=nano
+export XDG_SCREENSHOTS_DIR="$HOME/Pictures/Screenshots"
+export GRIMSHOT_FILENAME_FORMAT="%Y-%m-%d_%H-%M-%S"
+
+
+# ==============================
+# Wayland Support
+# ==============================
+if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
   export MOZ_ENABLE_WAYLAND=1
+  export ELECTRON_OZONE_PLATFORM_HINT=auto
 fi
 
-export XDG_SCREENSHOTS_DIR="$HOME/Pictures/Screenshots"  # Directory for storing screenshots
-export GRIMSHOT_FILENAME_FORMAT="$(date '+%Y-%m-%d_%H-%M-%S')"
-export EDITOR=nano
 
-# Check the hostname and set the MANGOHUD_CONFIG variable accordingly
-case "$(hostname)" in
-    Omar-PC) export MANGOHUD_CONFIG="preset=5" ;;
-    Omar-Laptop) export MANGOHUD_CONFIG="preset=8" ;;
-    Omar-GamingLaptop) export MANGOHUD_CONFIG="preset=7" ;;
-    dell-gaminglaptop) export MANGOHUD_CONFIG="preset=9" ;;
+# ==============================
+# MangoHud per machine
+# ==============================
+case "$(hostname -s)" in
+  Omar-PC)           export MANGOHUD_CONFIG="preset=5" ;;
+  Omar-Laptop)       export MANGOHUD_CONFIG="preset=8" ;;
+  Omar-GamingLaptop) export MANGOHUD_CONFIG="preset=7" ;;
+  Hany-GamingLaptop) export MANGOHUD_CONFIG="preset=9" ;;
 esac
 
-export ELECTRON_OZONE_PLATFORM_HINT=auto
 
+# ==============================
+# Desktop Detection
+# ==============================
+DE="$(printf "%s" "$XDG_CURRENT_DESKTOP" | tr '[:upper:]' '[:lower:]')"
 
+case "$DE" in
 
-if [ "$XDG_SESSION_DESKTOP" = "none+i3" ] ||  [ "$XDG_SESSION_DESKTOP" = "i3" ] || [ "$XDG_SESSION_DESKTOP" = "sway" ] || [ "$XDG_SESSION_DESKTOP" = "Hyprland" ]; then
-  
-  # Set the GTK theme to use for applications
-  export GTK_THEME=Mint-Y-Dark-Red
+  # ----------------------------
+  # i3 / sway / Hyprland
+  # ----------------------------
+  *i3*|*sway*|*hyprland*)
+    export GTK_THEME="Mint-Y-Dark-Red"
+    export XCURSOR_THEME="WhiteSur-cursors"
+    export XCURSOR_SIZE=24
 
-  # Set the Xcursor theme
-  export XCURSOR_THEME=WhiteSur-cursors
-fi
+    export QT_STYLE_OVERRIDE=kvantum
+    export QT_QPA_PLATFORMTHEME=qt6ct
+    export KVANTUM_THEME="Nordic-Solid-Red"
+    export QT_QPA_ICONTHEME="Papirus-Dark"
+    export KDE_COLOR_SCHEME="Nord Red Dark"
+    ;;
 
-if [ "$XDG_SESSION_DESKTOP" = "none+i3" ] || [ "$XDG_SESSION_DESKTOP" = "i3" ] || [ "$XDG_SESSION_DESKTOP" = "sway" ] || [ "$XDG_SESSION_DESKTOP" = "Hyprland" ] || [ "$XDG_SESSION_DESKTOP" = "gnome" ] || [ "$XDG_SESSION_DESKTOP" = "gnome-wayland" ]; then
-  # Override the default style for QT applications 
-  export QT_STYLE_OVERRIDE=kvantum
-  # Set Kvantum theme
-  export KVANTUM_THEME=Nordic-Solid-Red
+  # ----------------------------
+  # GNOME
+  # ----------------------------
+  *gnome*)
+    export XCURSOR_THEME="WhiteSur-cursors"
 
-  # Set the platform theme for QT applications
-  export QT_QPA_PLATFORMTHEME=qt6ct
+    # Only force Qt styling (GNOME has no native Qt integration)
+    export QT_STYLE_OVERRIDE=kvantum
+    export QT_QPA_PLATFORMTHEME=qt6ct
+    export KVANTUM_THEME="Nordic-Solid-Red"
+    export QT_QPA_ICONTHEME="Papirus-Dark"
+    export KDE_COLOR_SCHEME="Nord Red Dark"
+    ;;
 
-  # Set the icon theme for the desktop environment
-  export ICON_THEME=Papirus-Dark
-  export QT_QPA_ICONTHEME=Papirus-Dark
+  # ----------------------------
+  # KDE Plasma
+  # ----------------------------
+  *kde*|*plasma*)
+    export GTK_THEME="Mint-Y-Dark-Red"
+    export XCURSOR_THEME="WhiteSur-cursors"
+    export KDE_COLOR_SCHEME="Nord Red Dark"
+    # DO NOT override QT in KDE
+    ;;
 
-  # Set the cursor theme across various environments
-  export CURSOR_THEME=WhiteSur-cursors
-  export QT_QT_CURSORTHEME=WhiteSur-cursors
-  export QT_QT5_CURSORTHEME=WhiteSur-cursors
-  export QT_QT6_CURSORTHEME=WhiteSur-cursors
-
-  # Define the cursor size for different environments
-  export CURSOR_SIZE=24
-  export XCURSOR_SIZE=24
-fi
-
-if [ "$XDG_SESSION_DESKTOP" = "gnome" ] || [ "$XDG_SESSION_DESKTOP" = "gnome-wayland" ]; then
-  
-  # Set the platform theme for QT applications
-  export QT_QPA_PLATFORMTHEME=qt6ct
-  
-  # Set the GTK theme to use for applications
- # export GTK_THEME=adw-gtk3-dark
-
-  # Set the Xcursor theme
-  export XCURSOR_THEME=WhiteSur-cursors
-fi
-
-if [ "$XDG_SESSION_DESKTOP" = "KDE" ]; then
-
-  # Set the GTK theme to use for applications
-  export GTK_THEME=Nordic
-
-  # Set the Xcursor theme
-  export XCURSOR_THEME=WhiteSur-cursors
-fi
-export KDE_COLOR_SCHEME="Nord Red Dark"
+esac
