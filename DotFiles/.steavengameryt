@@ -355,7 +355,7 @@ case "$(hostname)" in
     Omar-PC) export MANGOHUD_CONFIG="preset=5" ;;
     Omar-Laptop) export MANGOHUD_CONFIG="preset=8" ;;
     Omar-GamingLaptop) export MANGOHUD_CONFIG="preset=7" ;;
-    dell-gaminglaptop) export MANGOHUD_CONFIG="preset=9" ;;
+    Hany-GAMINGLAPTOP) export MANGOHUD_CONFIG="preset=9" ;;
 esac
 # Set the ELECTRON_OZONE_PLATFORM_HINT environment variable to auto for Electron apps
 export ELECTRON_OZONE_PLATFORM_HINT=auto  # Set Electron app platform hint to automatic detection
