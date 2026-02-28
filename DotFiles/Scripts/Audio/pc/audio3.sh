@@ -8,6 +8,11 @@ pactl set-card-profile alsa_card.usb-XiiSound_Technology_Corporation_H848_USB_Ga
 pactl set-card-profile alsa_card.pci-0000_08_00.1 pro-audio
 pactl set-card-profile alsa_card.pci-0000_03_00.1 pro-audio
 
+# Change Capture cards profiles to the proper ones
+pactl set-card-profile alsa_card.usb-MACROSILICON_USB_Video-02 input:iec958-stereo
+pactl set-card-profile alsa_card.usb-MACROSILICON_USB_Video-02.2 input:iec958-stereo
+pactl set-card-profile alsa_card.usb-MACROSILICON_USB_Video-02.3 input:iec958-stereo
+
 # Change Headset Audio to 100%
 amixer -c headset set PCM 100%
 amixer -c headset set PCM,1 100%
