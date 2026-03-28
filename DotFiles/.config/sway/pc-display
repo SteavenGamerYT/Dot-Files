@@ -5,7 +5,7 @@ output "DP-1" {
     transform normal
     scale 1.0
     scale_filter nearest
-    adaptive_sync on
+    adaptive_sync off
     dpms on
     color_profile icc ~/.config/sway/display-color-profile/msi-mp225-pro.icm
 }

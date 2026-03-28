@@ -5,8 +5,8 @@ pactl set-card-profile alsa_card.usb-XiiSound_Technology_Corporation_H848_Wirele
 pactl set-card-profile alsa_card.usb-XiiSound_Technology_Corporation_H848_USB_Gaming_Headset-00 output:iec958-stereo+input:mono-fallback
 
 # Change Gpu Audio profiles to the proper ones
-pactl set-card-profile alsa_card.pci-0000_08_00.1 pro-audio
-pactl set-card-profile alsa_card.pci-0000_03_00.1 pro-audio
+pactl set-card-profile alsa_card.pci-0000_78_00.1 pro-audio
+pactl set-card-profile alsa_card.pci-0000_78_00.1 pro-audio
 
 # Change Capture cards profiles to the proper ones
 pactl set-card-profile alsa_card.usb-MACROSILICON_USB_Video-02 input:iec958-stereo
@@ -30,7 +30,7 @@ pactl set-sink-mute alsa_output.pci-0000_03_00.1.pro-output-8 1
 pactl set-sink-mute alsa_output.pci-0000_03_00.1.pro-output-9 1
 
 # Change Speekers Audio to 20% to prevent loud noise on startup
-pactl set-sink-volume alsa_output.pci-0000_0a_00.6.analog-stereo 20%
+pactl set-sink-volume alsa_output.pci-0000_78_00.6.analog-stereo 20%
 
 # Set Speekers as default for Audio
-pactl set-default-sink alsa_output.pci-0000_0a_00.6.analog-stereo
+pactl set-default-sink alsa_output.pci-0000_78_00.6.analog-stereo

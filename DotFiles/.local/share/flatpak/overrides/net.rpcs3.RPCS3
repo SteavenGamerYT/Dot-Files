@@ -3,5 +3,5 @@ filesystems=xdg-config/MangoHud:ro;~/Games/Roms/PlayStation 3:rw;~/SaveGames/1-E
 
 [Environment]
 OBS_VKCAPTURE=1
-ENABLE_VKBASALT=1
-MANGOHUD=1
+#ENABLE_VKBASALT=1
+#MANGOHUD=1

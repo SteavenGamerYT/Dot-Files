@@ -3,11 +3,11 @@ set -x
 
 # set audio profiles
 
-# TU116 High Definition Audio Controller
-pactl set-card-profile alsa_card.pci-0000_08_00.1 pro-audio
+# AMD Igpu
+pactl set-card-profile alsa_card.pci-0000_78_00.1 pro-audio
 
 # Rx 7600 xt
-pactl set-card-profile alsa_card.pci-0000_03_00.1 pro-audio
+pactl set-card-profile alsa_card.pci-0000_78_00.1 pro-audio
 
 # H848 Wireless Headset
 pactl set-card-profile alsa_card.usb-XiiSound_Technology_Corporation_H848_Wireless_headset-00 output:iec958-stereo+input:mono-fallback
