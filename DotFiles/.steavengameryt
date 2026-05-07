@@ -368,3 +368,5 @@ export HOMEBREW_NO_ANALYTICS=1  # Prevent Homebrew from sending usage statistics
 export OLLAMA_HOST=192.168.1.14:11434  # Define the host for Ollama service
 
 export NIXPKGS_ALLOW_UNFREE=1
+
+alias waydroid-network-fix='sudo iptables -P FORWARD ACCEPT' # Fixs waydroid network
