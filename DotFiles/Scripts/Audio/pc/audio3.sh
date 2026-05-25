@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -x
 
 # Change Headset profile to the proper one
 pactl set-card-profile alsa_card.usb-XiiSound_Technology_Corporation_H848_Wireless_headset-00 output:iec958-stereo+input:mono-fallback
@@ -13,7 +14,14 @@ pactl set-card-profile alsa_card.usb-MACROSILICON_USB_Video-02 input:iec958-ster
 pactl set-card-profile alsa_card.usb-MACROSILICON_USB_Video-02.2 input:iec958-stereo
 pactl set-card-profile alsa_card.usb-MACROSILICON_USB_Video-02.3 input:iec958-stereo
 
-# Change Headset Audio to 100%
+# Change Capture Card Audio to 100%
+pactl set-source-volume alsa_input.usb-MACROSILICON_USB_Video-02.iec958-stereo 100%
+pactl set-source-volume alsa_input.usb-MACROSILICON_USB_Video-02.2.iec958-stereo 100%
+pactl set-source-volume alsa_input.usb-MACROSILICON_USB_Video-02.3.iec958-stereo 100%
+
+# Change Unmute Headset and Set it's Audio to 100%
+pactl set-sink-mute alsa_output.usb-XiiSound_Technology_Corporation_H848_Wireless_headset-00.iec958-stereo 0
+pactl set-sink-mute alsa_output.usb-XiiSound_Technology_Corporation_H848_USB_Gaming_Headset-00.iec958-stereo 0
 amixer -c headset set PCM 100%
 amixer -c headset set PCM,1 100%
 amixer -c Headset set PCM 100%
@@ -28,6 +36,9 @@ pactl set-sink-volume alsa_output.pci-0000_03_00.1.pro-output-8 0%
 pactl set-sink-volume alsa_output.pci-0000_03_00.1.pro-output-9 0%
 pactl set-sink-mute alsa_output.pci-0000_03_00.1.pro-output-8 1
 pactl set-sink-mute alsa_output.pci-0000_03_00.1.pro-output-9 1
+
+# Unmute Speakers
+pactl set-sink-mute alsa_output.pci-0000_78_00.6.analog-stereo 0
 
 # Change Speekers Audio to 20% to prevent loud noise on startup
 pactl set-sink-volume alsa_output.pci-0000_78_00.6.analog-stereo 20%
