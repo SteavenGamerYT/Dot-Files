@@ -19,21 +19,21 @@ output "DP-2" {
     dpms on
     color_profile icc ~/.config/sway/display-color-profile/benq-gl2460.icm
 }
-output "HDMI-A-2" {
-    mode  1366x768@59.79Hz
-    pos 0 0
-    transform normal
-    scale 1.0
-    scale_filter nearest
-    adaptive_sync off
-    dpms on
-}
-workspace 2 output DP-1
-workspace 3 output DP-2
-workspace 1 output HDMI-A-2
+#output "HDMI-A-2" {
+#    mode  1366x768@59.79Hz
+#    pos 0 0
+#    transform normal
+#    scale 1.0
+#    scale_filter nearest
+#    adaptive_sync off
+#    dpms on
+#}
+workspace 1 output DP-1
+workspace 2 output DP-2
+#workspace 1 output HDMI-A-2
 exec_always --no-startup-id uwsm app -- xrandr --output DP-1 --primary
 
 # GTX 1650
-output "DVI-D-1" disable
-output "HDMI-A-3" disable
-output "DP-3" disable
+#output "DVI-D-1" disable
+#output "HDMI-A-3" disable
+#output "DP-3" disable
