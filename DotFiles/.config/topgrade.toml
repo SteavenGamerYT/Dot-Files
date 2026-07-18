@@ -84,12 +84,12 @@ sudo_command = "sudo"
 # Commands to run before anything
 [pre_commands]
 # "Emacs Snapshot" = "rm -rf ~/.emacs.d/elpa.bak && cp -rl ~/.emacs.d/elpa ~/.emacs.d/elpa.bak"
-"Fix ClamAV permissions (pre)" = "sudo chown -R $USER:$USER /var/lib/clamav"
+"Fix ClamAV permissions (pre)" = "sudo chown -R $USER:$USER /var/lib/clamav && sudo chown -R $USER:$USER /var/lib/clamav"
 
 # Commands to run after anything
 [post_commands]
 # "Emacs Snapshot" = "rm -rf ~/.emacs.d/elpa.bak && cp -rl ~/.emacs.d/elpa ~/.emacs.d/elpa.bak"
-"Restore ClamAV permissions (post)" = "sudo chown -R clamav:clamav /var/lib/clamav"
+"Restore ClamAV permissions (post)" = "sudo chown -R clamav:clamav /var/lib/clamav && sudo chown -R clamav:clamav /var/lib/clamav"
 
 # Custom commands
 [commands]

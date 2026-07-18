@@ -365,7 +365,7 @@ export ELECTRON_OZONE_PLATFORM_HINT=auto  # Set Electron app platform hint to au
 export HOMEBREW_NO_ANALYTICS=1  # Prevent Homebrew from sending usage statistics
 
 # Set OLLAMA_HOST to Omar-PC
-export OLLAMA_HOST=192.168.1.14:11434  # Define the host for Ollama service
+export OLLAMA_HOST=192.168.1.14:11435  # Define the host for Ollama service
 
 export NIXPKGS_ALLOW_UNFREE=1
 
