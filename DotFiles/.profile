@@ -1,4 +1,4 @@
-# ==============================
+w# ==============================
 # PATH — Add custom directories
 # ==============================
 for dir in \
@@ -37,7 +37,7 @@ fi
 case "$(hostname -s)" in
   Omar-PC)           export MANGOHUD_CONFIG="preset=5" ;;
   Omar-PC2)           export MANGOHUD_CONFIG="preset=6" ;;
-  Omar-Laptop)       export MANGOHUD_CONFIG="preset=8" ;;
+  Omar-LaptopPC)       export MANGOHUD_CONFIG="preset=8" ;;
   Omar-GamingLaptop) export MANGOHUD_CONFIG="preset=7" ;;
   Hany-GamingLaptop) export MANGOHUD_CONFIG="preset=9" ;;
 esac

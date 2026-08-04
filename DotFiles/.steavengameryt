@@ -354,7 +354,7 @@ export MAKEFLAGS="-j$(nproc)" # Sets the MAKEFLAGS environment variable to use a
 case "$(hostname)" in
     Omar-PC) export MANGOHUD_CONFIG="preset=5" ;;
     Omar-PC2) export MANGOHUD_CONFIG="preset=6" ;;
-    Omar-Laptop) export MANGOHUD_CONFIG="preset=8" ;;
+    Omar-LaptopPC) export MANGOHUD_CONFIG="preset=8" ;;
     Omar-GamingLaptop) export MANGOHUD_CONFIG="preset=7" ;;
     Hany-GAMINGLAPTOP) export MANGOHUD_CONFIG="preset=9" ;;
 esac
