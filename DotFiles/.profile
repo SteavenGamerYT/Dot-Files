@@ -40,6 +40,7 @@ case "$(hostname -s)" in
   Omar-LaptopPC)       export MANGOHUD_CONFIG="preset=8" ;;
   Omar-GamingLaptop) export MANGOHUD_CONFIG="preset=7" ;;
   Hany-GamingLaptop) export MANGOHUD_CONFIG="preset=9" ;;
+  Omar-Laptop) export MANGOHUD_CONFIG="preset=10" ;;
 esac
 
 
