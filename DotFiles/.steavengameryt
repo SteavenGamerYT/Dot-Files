@@ -371,3 +371,13 @@ export OLLAMA_HOST=192.168.1.14:11435  # Define the host for Ollama service
 export NIXPKGS_ALLOW_UNFREE=1
 
 alias waydroid-network-fix='sudo iptables -P FORWARD ACCEPT' # Fixs waydroid network
+
+topgrade() {
+    local topgrade_bin
+    topgrade_bin="$(type -P topgrade)" || return 1
+
+    "$topgrade_bin"
+
+    local docker_run="$HOME/Docker/run.sh"
+    [[ -f "$docker_run" ]] && bash "$docker_run"
+}
