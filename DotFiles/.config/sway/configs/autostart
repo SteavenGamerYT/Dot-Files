@@ -9,7 +9,7 @@ exec --no-startup-id uwsm app -- wl-paste --type image --watch cliphist store
 exec --no-startup-id uwsm app -- wl-clip-persist --clipboard regular
 
 #  ## Startup Sound
-exec_always --no-startup-id uwsm app -- ~/.config/sway/scripts/startup-sound.sh
+#exec_always --no-startup-id uwsm app -- ~/.config/sway/scripts/startup-sound.sh
 
 # Autostart Applications
 exec --no-startup-id uwsm app -- swaync
@@ -28,8 +28,8 @@ exec --no-startup-id uwsm app -- sh -c 'sleep 5 && coolercontrol'
 exec --no-startup-id uwsm app -- sh -c 'sleep 5 && openrgb --startminimized --profile "SteavenGamerYT"'
 exec --no-startup-id uwsm app -- xwaylandvideobridge
 exec --no-startup-id uwsm app -- ~/.config/waybar/launch.sh
-exec swaymsg workspace 2
-exec --no-startup-id uwsm app -- conky -c ~/.config/conky/conky-pc.conf
+exec swaymsg workspace 1
+#exec --no-startup-id uwsm app -- conky -c ~/.config/conky/conky-pc.conf
 
 # GUI apps (Starts in system tray)
 exec --no-startup-id uwsm app -- sh -c 'sleep 5 && flatpak run com.discordapp.Discord --start-minimized'
