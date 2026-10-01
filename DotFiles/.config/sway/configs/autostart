@@ -25,7 +25,7 @@ exec --no-startup-id uwsm app -- sh -c 'sleep 5 && /usr/bin/lxqt-policykit-agent
 exec --no-startup-id uwsm app -- kdeconnectd
 exec --no-startup-id uwsm app -- kdeconnect-indicator
 exec --no-startup-id uwsm app -- sh -c 'sleep 5 && coolercontrol'
-exec --no-startup-id uwsm app -- sh -c 'sleep 5 && openrgb --startminimized --profile "SteavenGamerYT"'
+#exec --no-startup-id uwsm app -- sh -c 'sleep 5 && openrgb --startminimized --profile "SteavenGamerYT"'
 exec --no-startup-id uwsm app -- xwaylandvideobridge
 exec --no-startup-id uwsm app -- ~/.config/waybar/launch.sh
 exec swaymsg workspace 1
