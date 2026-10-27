@@ -54,11 +54,16 @@ fi
 #esac
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 
-# Check if Starship configuration is readable before initializing
-if [[ -r "$STARSHIP_CONFIG" ]]; then
+if command -v starship >/dev/null 2>&1; then
+  if [[ -r "$STARSHIP_CONFIG" ]]; then
     eval "$(starship init bash)"
-else
+  else
     echo "Error: The configuration file $STARSHIP_CONFIG is not readable!"
+  fi
+elif [[ -r "$HOME/DotFiles/theme-bash" ]]; then
+  source "$HOME/DotFiles/theme-bash"
+else
+  echo "Error: Starship is unavailable and $HOME/DotFiles/theme-bash.bash is not readable."
 fi
 
 # Additional utilities initialization

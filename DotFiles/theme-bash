@@ -1,0 +1,76 @@
+# Bash prompt styled after the supplied Starship format.
+# Requires a Nerd Font for the icons and powerline separators.
+
+_prompt_path() {
+  local path=${PWD/#"$HOME"/~}
+  local -a parts
+  IFS=/ read -r -a parts <<< "$path"
+
+  if ((${#parts[@]} > 3)); then
+    path="…/${parts[-3]}/${parts[-2]}/${parts[-1]}"
+  fi
+
+  path=${path//Documents/ }
+  path=${path//Downloads/ }
+  path=${path//Music/ }
+  path=${path//Pictures/ }
+  printf '%s' "$path"
+}
+
+_prompt_git() {
+  git rev-parse --is-inside-work-tree &>/dev/null || return
+
+  local branch status
+  branch=$(git branch --show-current 2>/dev/null)
+  [[ -z $branch ]] && branch=$(git rev-parse --short HEAD 2>/dev/null)
+
+  status=$(git status --short 2>/dev/null)
+  [[ -n $status ]] && status='*'
+
+  printf '  %s%s ' "$branch" "$status"
+}
+
+_prompt_runtime() {
+  local symbol=$1 command=$2 version
+  command -v "$command" &>/dev/null || return
+
+  case $command in
+    node) version=$(node --version 2>/dev/null) ;;
+    rustc) version=$(rustc --version 2>/dev/null | awk '{print $2}') ;;
+    go) version=$(go version 2>/dev/null | awk '{print $3}') ;;
+    php) version=$(php --version 2>/dev/null | awk 'NR == 1 {print $2}') ;;
+  esac
+
+  [[ -n $version ]] && printf ' %s %s ' "$symbol" "$version"
+}
+
+_prompt_command() {
+  local left
+
+  left=''
+  left+='\[\e[48;2;112;71;76m\e[38;2;220;220;220m\] 󰤇 '
+  left+='\[\e[48;2;191;97;106m\e[38;2;112;71;76m\]'
+  left+='\[\e[48;2;191;97;106m\e[38;2;248;223;226m\] '
+  left+="$(_prompt_path)"
+  left+=' \[\e[48;2;59;47;48m\e[38;2;191;97;106m\]'
+  left+='\[\e[48;2;59;47;48m\e[38;2;248;223;226m\]'
+
+  local git
+  git=$(_prompt_git)
+  left+="$git"
+
+  left+='\[\e[48;2;46;46;46m\e[38;2;59;47;48m\]'
+  left+='\[\e[48;2;46;46;46m\e[38;2;248;223;226m\]'
+  left+="$(_prompt_runtime '' node)"
+  left+="$(_prompt_runtime '' rustc)"
+  left+="$(_prompt_runtime 'ﳑ' go)"
+  left+="$(_prompt_runtime '' php)"
+  left+='\[\e[48;2;29;29;29m\e[38;2;46;46;46m\]'
+  left+='\[\e[48;2;29;29;29m\e[38;2;208;135;145m\]  '
+  left+="$(date '+%I:%M %P')"
+  left+=' \[\e[38;2;29;29;29m\]\[\e[0m\]'
+
+  PS1="${left}"$'\n''\[\e[38;2;191;97;106m\]❯\[\e[0m\] '
+}
+
+PROMPT_COMMAND=_prompt_command
