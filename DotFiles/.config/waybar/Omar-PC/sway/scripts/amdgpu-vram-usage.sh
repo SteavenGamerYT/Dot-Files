@@ -4,10 +4,28 @@
 
 # Function to detect AMD GPU
 detect_amd_gpu() {
-    for drm_path in /sys/class/drm/*; do
-        if [[ -f "$drm_path/device/uevent" ]] && grep -q "DRIVER=amdgpu" "$drm_path/device/uevent"; then
-            echo "$drm_path"
-            return 0
+    local drm_path dev_path
+
+    # Only inspect primary card nodes (card0, card1, etc.), skip connector sub-paths
+    for drm_path in /sys/class/drm/card[0-9]*; do
+        dev_path="$drm_path/device"
+
+        # Check if driver is amdgpu
+        if [[ -f "$dev_path/uevent" ]] && grep -q "DRIVER=amdgpu" "$dev_path/uevent"; then
+            # Discrete AMD GPUs sit behind an external PCIe slot link and report max_link_width
+            # If both report link widths, modern desktop Ryzen iGPUs use internal root buses (often x1/x2 or 0)
+            # Alternatively, check if the device has dedicated VRAM (> 2GB / 2048MB):
+            if [[ -f "$dev_path/mem_info_vram_total" ]]; then
+                local vram_bytes
+                vram_bytes=$(cat "$dev_path/mem_info_vram_total" 2>/dev/null || echo 0)
+
+                # 2GB in bytes = 2147483648 (iGPUs typically default to 512MB-2GB dynamic system RAM allocation)
+                # Dedicated cards (like RX 7600 XT with 16GB) will report full hardware VRAM
+                if (( vram_bytes > 2147483648 )); then
+                    echo "$drm_path"
+                    return 0
+                fi
+            fi
         fi
     done
     return 1
