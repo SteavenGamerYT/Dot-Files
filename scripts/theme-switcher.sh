@@ -74,7 +74,7 @@ case "$THEME" in
         DISPLAY_NAME="Pure Nordic (Full Blue)"
         GTK_THEME="Nordic"
         ICON_THEME="Papirus-Dark"
-        CURSOR_THEME="WhiteSur-cursors"
+        CURSOR_THEME="Nordzy-cursors"
         KVANTUM_THEME="Nordic-solid"
         KVANTUM_CONF="Nordic-Solid"
         KDE_COLOR="Nordic"

@@ -56,7 +56,7 @@ case "$DE" in
   # ----------------------------
   *i3*|*sway*|*hyprland*)
     export GTK_THEME=Nordic
-    export XCURSOR_THEME=WhiteSur-cursors
+    export XCURSOR_THEME=Nordzy-cursors
     export XCURSOR_SIZE=24
 
     export QT_STYLE_OVERRIDE=kvantum
@@ -70,7 +70,7 @@ case "$DE" in
   # GNOME
   # ----------------------------
   *gnome*)
-    export XCURSOR_THEME=WhiteSur-cursors
+    export XCURSOR_THEME=Nordzy-cursors
 
     # Only force Qt styling (GNOME has no native Qt integration)
     export QT_STYLE_OVERRIDE=kvantum
@@ -85,7 +85,7 @@ case "$DE" in
   # ----------------------------
   *kde*|*plasma*)
     export GTK_THEME=Nordic
-    export XCURSOR_THEME=WhiteSur-cursors
+    export XCURSOR_THEME=Nordzy-cursors
     export KDE_COLOR_SCHEME="Nordic"
     # DO NOT override QT in KDE
     ;;

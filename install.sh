@@ -89,6 +89,66 @@ link_target() {
 }
 
 # ------------------------------------------------------------------------------
+# Distribution-specific setup
+# ------------------------------------------------------------------------------
+if [ -r /etc/os-release ]; then
+    source /etc/os-release
+
+    if [[ "${ID:-}" =~ ^[Ss]teaven[Ll]inux$ ]]; then
+        blue "==> SteavenLinux detected."
+
+        STEAVEN_PACKAGES=(
+            # Adwaita
+            adwaita-icon-theme
+            adwaita-icon-theme-legacy
+            adwaita-fonts
+
+            # Fluent
+            fluent-cursor-theme-git
+            fluent-gtk-theme-git
+            fluent-icon-theme-git
+
+            # Mint
+            mint-themes
+
+            # Nordic
+            nordic-theme-git
+            nordzy-cursors
+
+            # Papirus
+            papirus-icon-theme
+            papirus-folders
+
+            # WhiteSur
+            whitesur-cursor-theme-git
+
+            # Fonts
+            ttf-hack
+            ttf-liberation
+            ttf-ms-win10-auto
+            ttf-roboto
+            ttf-roboto-mono-nerd
+            ttf-ubuntu-font-family
+
+            # Noto
+            noto-fonts
+            noto-fonts-ar
+            noto-fonts-cjk
+            noto-fonts-emoji
+        )
+
+        if [ "$DRY_RUN" = true ]; then
+            yellow "  [would update] paru -Syu"
+            yellow "  [would install] ${STEAVEN_PACKAGES[*]}"
+        else
+            blue "==> Updating package database and installing SteavenLinux packages..."
+
+            paru -Syu --noconfirm "${STEAVEN_PACKAGES[@]}"
+        fi
+    fi
+fi
+
+# ------------------------------------------------------------------------------
 # Main installation process
 # ------------------------------------------------------------------------------
 blue "==> Installing dotfiles from: $DOTFILES_DIR"
