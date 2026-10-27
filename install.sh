@@ -162,6 +162,11 @@ if [ -d "$DOTFILES_DIR/.local/share/nemo" ]; then
     link_target "$DOTFILES_DIR/.local/share/nemo" "$HOME/.local/share/nemo"
 fi
 
+# KDE Color Schemes
+if [ -d "$DOTFILES_DIR/.local/share/color-schemes" ]; then
+    link_target "$DOTFILES_DIR/.local/share/color-schemes" "$HOME/.local/share/color-schemes"
+fi
+
 # Make scripts executable
 if [ "$DRY_RUN" = false ]; then
     find "$DOTFILES_DIR/scripts" -type f -name "*.sh" -exec chmod +x {} + 2>/dev/null || true

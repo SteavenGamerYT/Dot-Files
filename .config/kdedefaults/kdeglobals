@@ -1,0 +1,8 @@
+[General]
+ColorScheme=Nordic
+
+[Icons]
+Theme=Papirus-Dark
+
+[KDE]
+widgetStyle=kvantum

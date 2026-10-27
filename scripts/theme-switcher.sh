@@ -108,7 +108,7 @@ case "$THEME" in
         CURSOR_THEME="WhiteSur-cursors"
         KVANTUM_THEME="Nordic-Solid-Red"
         KVANTUM_CONF="Nordic-Solid-Red"
-        KDE_COLOR="Nord Red Dark"
+        KDE_COLOR="Nordic-Red"
         HYPR_THEME="theme-Nordic-red.conf"
         SWAY_THEME="theme-Nordic-red"
         I3_THEME="theme-Nordic-red"
@@ -220,11 +220,12 @@ for env_file in "$DOTFILES_DIR/.config/environment.d/10-user.conf" "$HOME/.confi
         safe_sed "s|^QT_QT6_CURSORTHEME=.*|QT_QT6_CURSORTHEME=$CURSOR_THEME|" "$env_file"
         safe_sed "s|^XCURSOR_THEME=.*|XCURSOR_THEME=$CURSOR_THEME|" "$env_file"
         safe_sed "s|^KVANTUM_THEME=.*|KVANTUM_THEME=$KVANTUM_THEME|" "$env_file"
+        safe_sed "s|^KDE_COLOR_SCHEME=.*|KDE_COLOR_SCHEME=\"$KDE_COLOR\"|" "$env_file"
     fi
 done
 
 if command -v systemctl >/dev/null 2>&1; then
-    systemctl --user import-environment GTK_THEME ICON_THEME QT_QPA_ICONTHEME CURSOR_THEME XCURSOR_THEME KVANTUM_THEME 2>/dev/null || true
+    systemctl --user import-environment GTK_THEME ICON_THEME QT_QPA_ICONTHEME CURSOR_THEME XCURSOR_THEME KVANTUM_THEME KDE_COLOR_SCHEME 2>/dev/null || true
 fi
 
 # ------------------------------------------------------------------------------
@@ -306,19 +307,27 @@ done
 # ------------------------------------------------------------------------------
 # 3. KDE Plasma & Xsettingsd
 # ------------------------------------------------------------------------------
-safe_sed "s|\(cursorTheme=\).*|\1$CURSOR_THEME|" "$HOME/.config/kcminputrc"
-safe_sed "s|\(cursorTheme=\).*|\1$CURSOR_THEME|" "$HOME/.config/kdedefaults/kcminputrc"
-safe_sed "s|\(widgetStyle=\).*|\1kvantum|" "$HOME/.config/kdedefaults/kdeglobals"
-safe_sed "s|\(ColorScheme=\).*|\1$KDE_COLOR|" "$HOME/.config/kdedefaults/kdeglobals"
-safe_sed "s|\(Theme=\).*|\1$ICON_THEME|" "$HOME/.config/kdedefaults/kdeglobals"
-safe_sed "s|\(widgetStyle=\).*|\1kvantum|" "$HOME/.config/kdeglobals"
-safe_sed "s|\(ColorScheme=\).*|\1$KDE_COLOR|" "$HOME/.config/kdeglobals"
-safe_sed "s|\(Theme=\).*|\1$ICON_THEME|" "$HOME/.config/kdeglobals"
-safe_sed "s|\(name=\).*|\1$GTK_THEME|" "$HOME/.config/kdedefaults/plasmarc"
+for kde_dir in "$HOME/.config" "$DOTFILES_DIR/.config"; do
+    [ -d "$kde_dir" ] || continue
+    safe_sed "s|\(cursorTheme=\).*|\1$CURSOR_THEME|" "$kde_dir/kcminputrc" 2>/dev/null || true
+    safe_sed "s|\(cursorTheme=\).*|\1$CURSOR_THEME|" "$kde_dir/kdedefaults/kcminputrc" 2>/dev/null || true
+    safe_sed "s|\(widgetStyle=\).*|\1kvantum|" "$kde_dir/kdedefaults/kdeglobals" 2>/dev/null || true
+    safe_sed "s|\(ColorScheme=\).*|\1$KDE_COLOR|" "$kde_dir/kdedefaults/kdeglobals" 2>/dev/null || true
+    safe_sed "s|\(Theme=\).*|\1$ICON_THEME|" "$kde_dir/kdedefaults/kdeglobals" 2>/dev/null || true
+    safe_sed "s|\(widgetStyle=\).*|\1kvantum|" "$kde_dir/kdeglobals" 2>/dev/null || true
+    safe_sed "s|\(ColorScheme=\).*|\1$KDE_COLOR|" "$kde_dir/kdeglobals" 2>/dev/null || true
+    safe_sed "s|\(Theme=\).*|\1$ICON_THEME|" "$kde_dir/kdeglobals" 2>/dev/null || true
+    safe_sed "s|\(name=\).*|\1$GTK_THEME|" "$kde_dir/kdedefaults/plasmarc" 2>/dev/null || true
+done
 
 safe_sed "s|\(Net/ThemeName \"\)[^\"]*|\1$GTK_THEME\"|" "$HOME/.config/xsettingsd/xsettingsd.conf"
 safe_sed "s|\(Gtk/CursorThemeName \"\)[^\"]*|\1$CURSOR_THEME\"|" "$HOME/.config/xsettingsd/xsettingsd.conf"
 safe_sed "s|\(Net/IconThemeName \"\)[^\"]*|\1$ICON_THEME\"|" "$HOME/.config/xsettingsd/xsettingsd.conf"
+
+# Apply KDE color scheme live via plasma-apply-colorscheme
+if command -v plasma-apply-colorscheme >/dev/null 2>&1; then
+    plasma-apply-colorscheme "$KDE_COLOR" >/dev/null 2>&1 || true
+fi
 
 # ------------------------------------------------------------------------------
 # 4. Papirus Folder Icons

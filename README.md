@@ -52,7 +52,7 @@ Dotfiles are customization files used to personalize Linux/Unix environments. Th
 ```text
 dot-files/
 ├── .config/            # XDG user configuration directories (Hyprland, Waybar, Kitty, etc.)
-├── .local/             # User data, Flatpak overrides, Nemo actions
+├── .local/             # User data, Flatpak overrides, Nemo actions, KDE color schemes
 ├── .ssh/               # SSH client configuration
 ├── scripts/            # System & desktop management utilities
 │   ├── theme-switcher.sh   # Switch between Nordic & Fluent dark themes
@@ -104,7 +104,7 @@ hyprctl setcursor WhiteSur-cursors 24
 
 ## Theme Switching
 
-Easily switch themes across GTK (2/3/4), Qt/Kvantum, Waybar, SwayNC, Rofi, Kitty, Alacritty, Starship, Papirus folder icons, Hyprland, Sway, and i3:
+Easily switch themes across GTK (2/3/4), Qt/Kvantum, KDE Color Schemes, Waybar, SwayNC, Rofi, Kitty, Alacritty, Starship, Papirus folder icons, Hyprland, Sway, and i3:
 
 ```bash
 # Apply Pure Nordic (Frost cyan/blue, Nordic GTK/Kvantum, Nordic folders)
