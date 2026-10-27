@@ -1,61 +1,176 @@
 #!/usr/bin/env bash
-rm -rf ~/DotFiles
-ln -s ~/GitHub/dot-files/DotFiles ~/DotFiles
+# ==============================================================================
+# Dotfiles Installer
+# Safely links dotfiles and configurations to $HOME with automatic backups.
+# ==============================================================================
 
-mkdir ~/.ssh
-mkdir ~/.config
-mkdir -p ~/.var/app/io.mpv.Mpv/config
-mkdir -p ~/.local/share/flatpak
-rm -rf ~/.steavengameryt ~/.bash-default ~/.zshrc ~/.bashrc ~/.profile ~/.zshenv ~/.p10k.zsh ~/.config/i3 ~/.config/picom ~/.config/neofetch ~/.config/polybar ~/.config/kitty ~/.config/BetterDiscord ~/.config/hypr ~/.config/waybar ~/.config/starship.toml ~/.config/ulauncher ~/.config/yay ~/.config/MangoHud ~/.ssh/config ~/.config/fish ~/.config/dunst ~/.config/swaylock ~/.config/rofi ~/.config/starship ~/.config/swaync ~/.zprofile ~/.config/fastfetch ~/.config/betterlockscreen ~/.config/alacritty ~/.config/sway ~/.config/xdg-desktop-portal ~/.config/sxhkd ~/.config/bspwm ~/.local/share/nemo ~/.config/nemo ~/.config/mpv ~/.var/app/io.mpv.Mpv/config/mpv ~/.local/share/flatpak/overrides ~/.config/Kvantum ~/.config/gtk-2.0 ~/.config/gtk-3.0 ~/.config/gtk-4.0 ~/.nanorc ~/.config/conky ~/.config/topgrade.toml
-ln -s ~/DotFiles/.steavengameryt ~/.steavengameryt
-ln -s ~/DotFiles/.bash-default ~/.bash-default
-ln -s ~/DotFiles/.zshrc ~/.zshrc
-ln -s ~/DotFiles/.bashrc ~/.bashrc
-ln -s ~/DotFiles/.profile ~/.profile
-ln -s ~/DotFiles/.zprofile ~/.zprofile
-ln -s ~/DotFiles/.zshenv ~/.zshenv
-ln -s ~/DotFiles/.p10k.zsh ~/.p10k.zsh
-ln -s ~/DotFiles/.config/i3 ~/.config/i3
-ln -s ~/DotFiles/.config/picom ~/.config/picom
-ln -s ~/DotFiles/.config/neofetch/ ~/.config/neofetch
-ln -s ~/DotFiles/.config/polybar ~/.config/polybar
-ln -s ~/DotFiles/.config/kitty ~/.config/kitty
-ln -s ~/DotFiles/.config/BetterDiscord ~/.config/BetterDiscord
-ln -s ~/DotFiles/.config/hypr ~/.config/hypr
-ln -s ~/DotFiles/.config/waybar ~/.config/waybar
-ln -s ~/DotFiles/.config/starship ~/.config/starship
-ln -s ~/DotFiles/.config/ulauncher ~/.config/ulauncher
-ln -s ~/DotFiles/.config/yay ~/.config/yay
-ln -s ~/DotFiles/.config/MangoHud ~/.config/MangoHud
-ln -s ~/DotFiles/.ssh/config ~/.ssh/config
-ln -s ~/DotFiles/.config/fish ~/.config/fish
-ln -s ~/DotFiles/.config/dunst ~/.config/dunst
-ln -s ~/DotFiles/.config/swaylock ~/.config/swaylock
-ln -s ~/DotFiles/.config/rofi ~/.config/rofi
-ln -s ~/DotFiles/.config/swaync ~/.config/swaync
-ln -s ~/DotFiles/.config/fastfetch ~/.config/fastfetch
-ln -s ~/DotFiles/.config/betterlockscreen ~/.config/betterlockscreen
-ln -s ~/DotFiles/.config/alacritty ~/.config/alacritty
-ln -s ~/DotFiles/.config/sway ~/.config/sway
-ln -s ~/DotFiles/.config/xdg-desktop-portal ~/.config/xdg-desktop-portal
-ln -s ~/DotFiles/.config/sxhkd ~/.config/sxhkd
-ln -s ~/DotFiles/.config/bspwm ~/.config/bspwm
-ln -s ~/DotFiles/.config/nemo ~/.config/nemo
-ln -s ~/DotFiles/.local/share/nemo ~/.local/share/nemo
-ln -s ~/DotFiles/.config/mpv ~/.config/mpv
-ln -s ~/DotFiles/.config/mpv ~/.var/app/io.mpv.Mpv/config/mpv
-ln -s ~/DotFiles/.local/share/flatpak/overrides ~/.local/share/flatpak/overrides
-ln -s ~/DotFiles/.nanorc ~/.nanorc
-ln -s ~/DotFiles/.config/conky ~/.config/conky
-ln -s ~/DotFiles/.config/topgrade.toml ~/.config/topgrade.toml
+set -euo pipefail
 
-ln -s ~/DotFiles/.config/Kvantum ~/.config/Kvantum
-ln -s ~/DotFiles/.config/gtk-2.0 ~/.config/gtk-2.0
-ln -s ~/DotFiles/.config/gtk-3.0 ~/.config/gtk-3.0
-ln -s ~/DotFiles/.config/gtk-4.0 ~/.config/gtk-4.0
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BACKUP_TIMESTAMP="$(date '+%Y%m%d_%H%M%S')"
+BACKUP_DIR="$HOME/.dotfiles_backup/$BACKUP_TIMESTAMP"
 
+DRY_RUN=false
+FORCE=false
 
-#cp -r ~/DotFiles/.config/Kvantum ~/.config/Kvantum
-#cp -r ~/DotFiles/.config/gtk-2.0 ~/.config/gtk-2.0
-#cp -r ~/DotFiles/.config/gtk-3.0 ~/.config/gtk-3.0
-#cp -r ~/DotFiles/.config/gtk-4.0 ~/.config/gtk-4.0
+# ------------------------------------------------------------------------------
+# Helpers & CLI arguments
+# ------------------------------------------------------------------------------
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") [OPTIONS]
+
+Options:
+  -d, --dry-run   Show actions that would be taken without modifying anything
+  -f, --force     Skip backup and force-link
+  -h, --help      Display this help message
+EOF
+    exit 0
+}
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -d|--dry-run) DRY_RUN=true; shift ;;
+        -f|--force)   FORCE=true; shift ;;
+        -h|--help)    usage ;;
+        *) echo "Unknown option: $1"; usage ;;
+    esac
+done
+
+# Color output helpers
+green() { printf "\033[1;32m%s\033[0m\n" "$*"; }
+yellow() { printf "\033[1;33m%s\033[0m\n" "$*"; }
+blue() { printf "\033[1;34m%s\033[0m\n" "$*"; }
+
+# ------------------------------------------------------------------------------
+# Link function with safe backup
+# ------------------------------------------------------------------------------
+link_target() {
+    local src="$1"
+    local dest="$2"
+
+    # Destination parent directory
+    local dest_dir
+    dest_dir="$(dirname "$dest")"
+
+    # Skip if already correctly linked
+    if [ -L "$dest" ]; then
+        local current_target
+        current_target="$(readlink "$dest")"
+        if [ "$current_target" = "$src" ] || [ "$(readlink -f "$dest" 2>/dev/null || true)" = "$(readlink -f "$src" 2>/dev/null || true)" ]; then
+            return 0
+        fi
+    fi
+
+    if [ "$DRY_RUN" = true ]; then
+        if [ -e "$dest" ] || [ -L "$dest" ]; then
+            echo "  [would backup] $dest -> $BACKUP_DIR/${dest#$HOME/}"
+        fi
+        echo "  [would link]   $dest -> $src"
+        return 0
+    fi
+
+    # Create destination parent directory if missing
+    mkdir -p "$dest_dir"
+
+    # Backup existing file / directory / wrong symlink
+    if [ -e "$dest" ] || [ -L "$dest" ]; then
+        if [ "$FORCE" = false ]; then
+            mkdir -p "$BACKUP_DIR/$(dirname "${dest#$HOME/}")"
+            mv "$dest" "$BACKUP_DIR/${dest#$HOME/}"
+            yellow "  [backup] $dest -> $BACKUP_DIR/${dest#$HOME/}"
+        else
+            rm -rf "$dest"
+        fi
+    fi
+
+    ln -s "$src" "$dest"
+    green "  [linked] $dest -> $src"
+}
+
+# ------------------------------------------------------------------------------
+# Main installation process
+# ------------------------------------------------------------------------------
+blue "==> Installing dotfiles from: $DOTFILES_DIR"
+
+if [ "$DRY_RUN" = true ]; then
+    yellow "Running in DRY-RUN mode. No changes will be written."
+fi
+
+# Ensure base target directories exist
+if [ "$DRY_RUN" = false ]; then
+    mkdir -p "$HOME/.config"
+    mkdir -p "$HOME/.ssh"
+    mkdir -p "$HOME/.local/share"
+    mkdir -p "$HOME/.var/app/io.mpv.Mpv/config"
+fi
+
+# 1. Compatibility symlink for legacy ~/DotFiles path
+blue "--> Setting up ~/DotFiles compatibility symlink..."
+link_target "$DOTFILES_DIR" "$HOME/DotFiles"
+
+# 2. Home root dotfiles
+blue "--> Linking shell and home configurations..."
+HOME_FILES=(
+    ".bash-default"
+    ".bashrc"
+    ".nanorc"
+    ".p10k.zsh"
+    ".profile"
+    ".steavengameryt"
+    ".zprofile"
+    ".zshenv"
+    ".zshrc"
+    "theme-bash"
+)
+
+for file in "${HOME_FILES[@]}"; do
+    if [ -f "$DOTFILES_DIR/$file" ]; then
+        link_target "$DOTFILES_DIR/$file" "$HOME/$file"
+    fi
+done
+
+# 3. SSH Configuration
+if [ -f "$DOTFILES_DIR/.ssh/config" ]; then
+    blue "--> Linking SSH configuration..."
+    link_target "$DOTFILES_DIR/.ssh/config" "$HOME/.ssh/config"
+fi
+
+# 4. Applications in .config/
+blue "--> Linking .config directories and files..."
+for item in "$DOTFILES_DIR/.config"/*; do
+    [ -e "$item" ] || continue
+    name="$(basename "$item")"
+    link_target "$item" "$HOME/.config/$name"
+done
+
+# 5. Specialized application links
+blue "--> Linking specialized application data..."
+
+# MPV Flatpak override config
+if [ -d "$DOTFILES_DIR/.config/mpv" ]; then
+    link_target "$DOTFILES_DIR/.config/mpv" "$HOME/.var/app/io.mpv.Mpv/config/mpv"
+fi
+
+# Flatpak overrides
+if [ -d "$DOTFILES_DIR/.local/share/flatpak/overrides" ]; then
+    link_target "$DOTFILES_DIR/.local/share/flatpak/overrides" "$HOME/.local/share/flatpak/overrides"
+fi
+
+# Nemo actions & scripts
+if [ -d "$DOTFILES_DIR/.local/share/nemo" ]; then
+    link_target "$DOTFILES_DIR/.local/share/nemo" "$HOME/.local/share/nemo"
+fi
+
+# Make scripts executable
+if [ "$DRY_RUN" = false ]; then
+    find "$DOTFILES_DIR/scripts" -type f -name "*.sh" -exec chmod +x {} + 2>/dev/null || true
+    [ -f "$DOTFILES_DIR/theme.sh" ] && chmod +x "$DOTFILES_DIR/theme.sh"
+    [ -f "$DOTFILES_DIR/theme2.sh" ] && chmod +x "$DOTFILES_DIR/theme2.sh"
+fi
+
+echo ""
+if [ -d "$BACKUP_DIR" ]; then
+    yellow "Existing files were backed up to: $BACKUP_DIR"
+fi
+green "==> Dotfiles setup completed successfully!"

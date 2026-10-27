@@ -2,6 +2,21 @@
 temp
 .log
 nohup.out
+*.bak
+
+# Application generated / machine-specific configs
+.config/ulauncher/user-themes/libadwaita/
+.config/i3/blurred_wallpaper.jpg
+.config/i3/wallpaper.conf
+.config/sway/wallpaper.conf
+.config/sway/outputs
+.config/sway/workspaces
+.config/hypr/wallpaper.conf
+.config/hypr/monitors.conf
+.config/hypr/workspaces.conf
+.config/mpv/memo-history.log
+
+# Legacy paths (for compatibility)
 DotFiles/.config/ulauncher/user-themes/libadwaita/
 DotFiles/.config/i3/blurred_wallpaper.jpg
 DotFiles/.config/i3/wallpaper.conf

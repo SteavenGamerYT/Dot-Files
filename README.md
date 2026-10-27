@@ -1,51 +1,129 @@
 # SteavenGamerYT's Dotfiles
 
-![](https://github.com/SteavenGamerYT/dot-files/blob/main/Screenshots/sway.png?raw=true)
+![Desktop Preview](Screenshots/sway.png)
 
-# Table of Contents
+Personal dotfiles and desktop configurations for Arch Linux, Hyprland, Sway, i3, and BSPWM.
 
-* [What Are Dotfiles?](https://github.com/SteavenGamerYT/dot-files#what-are-dotfiles)
+---
 
-* [My Window Manager Configs](https://github.com/SteavenGamerYT/dot-files#my-window-manager-configs)
+## Table of Contents
 
-* [Other Popular Configs Of Mine](https://github.com/SteavenGamerYT/dot-files#other-popular-configs-of-mine)
+* [Overview](#overview)
+* [Window Managers](#window-managers)
+* [Configurations](#configurations)
+* [Repository Structure](#repository-structure)
+* [Installation](#installation)
+* [Theme Switching](#theme-switching)
+* [Updating](#updating)
 
-* [Using](https://github.com/SteavenGamerYT/dot-files#Using)
+---
 
-* [Install](https://github.com/SteavenGamerYT/dot-files#Install)
+## Overview
 
-# What Are Dotfiles?
-Dotfiles are the customization files that are used to personalize your Linux or other Unix-based system.  You can tell that a file is a dotfile because the name of the file will begin with a period–a dot!  The period at the beginning of a filename or directory name indicates that it is a hidden file or directory.  This repository contains my personal dotfiles.  They are stored here for convenience so that I may quickly access them on new machines or new installs.  Also, others may find some of my configurations helpful in customizing their own dotfiles.
+Dotfiles are customization files used to personalize Linux/Unix environments. This repository maintains configurations across machines with safe symlinks, automated backups, and theme toggling.
 
-# My Window Manager Configs
-| [i3](https://github.com/SteavenGamerYT/dot-files/blob/main/DotFiles/.config/i3/config) |
-| :---------------------------------------------------------------------- |
-| [Sway](https://github.com/SteavenGamerYT/dot-files/blob/main/DotFiles/.config/sway/config) |
-| [Hyprland](https://github.com/SteavenGamerYT/dot-files/blob/main/DotFiles/.config/hypr/hyprland.conf) |
-| [Bspwm](https://github.com/SteavenGamerYT/dot-files/blob/main/DotFiles/.config/bspwm/bspwmrc) |
+---
 
-# Other Popular Configs Of Mine
-| [bash](https://github.com/SteavenGamerYT/dot-files/blob/main/DotFiles/.bashrc)   | [zsh](https://github.com/SteavenGamerYT/dot-files/blob/main/DotFiles/.zshr)    |
-| :---------------------------------------------------------------------- | :-------------------------------------------------------------------- |
-| [Bash + Zsh .steavengameryt](https://github.com/SteavenGamerYT/dot-files/blob/main/DotFiles/.steavengameryt) | [fish](https://github.com/SteavenGamerYT/dot-files/blob/main/DotFiles/.config/fish) |
-| [neofetch](https://github.com/SteavenGamerYT/dot-files/blob/main/DotFiles/.config/neofetch)   | [mangohud](https://github.com/SteavenGamerYT/dot-files/blob/main/DotFiles/.config/MangoHud) |
-| [Polybar](https://github.com/SteavenGamerYT/dot-files/blob/main/DotFiles/.config/polybar)   | [waybar](https://github.com/SteavenGamerYT/dot-files/blob/main/DotFiles/.config/waybar) |
-| [Rofi](https://github.com/SteavenGamerYT/dot-files/blob/main/DotFiles/.config/rofi)     | [kitty](https://github.com/SteavenGamerYT/dot-files/blob/main/DotFiles/.config/kitty) |
-| [picom](https://github.com/SteavenGamerYT/dot-files/blob/main/DotFiles/.config/picom)   | [alacritty](https://github.com/SteavenGamerYT/dot-files/blob/main/DotFiles/.config/alacritty) |
-| [dunst](https://github.com/SteavenGamerYT/dot-files/blob/main/DotFiles/.config/dunst)   | [swaync](https://github.com/SteavenGamerYT/dot-files/blob/main/DotFiles/.config/swaync) |
+## Window Managers
 
+| Window Manager | Config Link |
+| :--- | :--- |
+| **Hyprland** | [.config/hypr/hyprland.conf](.config/hypr/hyprland.conf) |
+| **Sway** | [.config/sway/config](.config/sway/config) |
+| **i3** | [.config/i3/config](.config/i3/config) |
+| **BSPWM** | [.config/bspwm/bspwmrc](.config/bspwm/bspwmrc) |
 
-Installation, make sure that you don't have any of this files already first!, if so remove them
+---
 
-# Install
-run install.sh
+## Configurations
 
-```sh
+| Category | Components |
+| :--- | :--- |
+| **Shells** | [bash](.bashrc) · [zsh](.zshrc) · [fish](.config/fish) · [.steavengameryt](.steavengameryt) |
+| **Bars & Notifications** | [waybar](.config/waybar) · [polybar](.config/polybar) · [dunst](.config/dunst) · [swaync](.config/swaync) |
+| **Terminals** | [kitty](.config/kitty) · [alacritty](.config/alacritty) · [starship](.config/starship) |
+| **Launchers & Menus** | [rofi](.config/rofi) · [ulauncher](.config/ulauncher) |
+| **Theming & System** | [MangoHud](.config/MangoHud) · [picom](.config/picom) · [fastfetch](.config/fastfetch) · [Kvantum](.config/Kvantum) · [BetterDiscord](.config/BetterDiscord) |
+
+---
+
+## Repository Structure
+
+```text
+dot-files/
+├── .config/            # XDG user configuration directories (Hyprland, Waybar, Kitty, etc.)
+├── .local/             # User data, Flatpak overrides, Nemo actions
+├── .ssh/               # SSH client configuration
+├── scripts/            # System & desktop management utilities
+│   ├── theme-switcher.sh   # Switch between Nordic & Fluent dark themes
+│   ├── patch-emulator-desktops.sh # Patch emulator desktop launchers for game-run
+│   ├── cpu-mhz/        # CPU frequency management
+│   ├── Audio/          # Per-machine audio configuration & services
+│   └── Laptop/         # Asusctl fan & profile controls
+├── misc/               # Exported data & backups (e.g., RSS OPML)
+├── tools/              # Standalone utilities (vim-nano)
+├── Screenshots/        # Showcase screenshots
+├── install.sh          # Safe installer with automatic backups & dry-run support
+├── update.sh           # Pull latest changes & refresh symlinks
+├── theme.sh            # Quick launcher for Nordic theme
+└── theme2.sh           # Quick launcher for Fluent theme
+```
+
+---
+
+## Installation
+
+Clone the repository and run the safe installer:
+
+```bash
+git clone https://github.com/SteavenGamerYT/dot-files.git ~/GitHub/dot-files
+cd ~/GitHub/dot-files
+
+# Preview changes without modifying anything
+./install.sh --dry-run
+
+# Run installation (existing files will be safely backed up to ~/.dotfiles_backup/)
+./install.sh
+```
+
+### Desktop Settings
+
+To apply matching GTK, cursor, and icon themes:
+
+```bash
 gsettings set org.gnome.desktop.interface cursor-theme 'WhiteSur-cursors'
 gsettings set org.gnome.desktop.interface gtk-theme 'Nordic'
 gsettings set org.gnome.desktop.interface cursor-size 24
 gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-hyprctl setcursor WhiteSur-cursors 24
 gsettings set org.gnome.nautilus.preferences always-use-location-entry true
+hyprctl setcursor WhiteSur-cursors 24
+```
+
+---
+
+## Theme Switching
+
+Easily switch themes across GTK, Qt/Kvantum, Waybar, SwayNC, Rofi, Kitty, Hyprland, and Sway:
+
+```bash
+# Apply Nordic theme
+./scripts/theme-switcher.sh nordic
+# Or use the shortcut:
+./theme.sh
+
+# Apply Fluent Dark theme
+./scripts/theme-switcher.sh fluent
+# Or use the shortcut:
+./theme2.sh
+```
+
+---
+
+## Updating
+
+Pull updates and refresh links:
+
+```bash
+./update.sh
 ```
