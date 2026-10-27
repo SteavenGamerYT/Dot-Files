@@ -55,15 +55,15 @@ case "$DE" in
   # i3 / sway / Hyprland
   # ----------------------------
   *i3*|*sway*|*hyprland*)
-    export GTK_THEME=Nordic
+    export GTK_THEME=Mint-Y-Dark-Red
     export XCURSOR_THEME=WhiteSur-cursors
     export XCURSOR_SIZE=24
 
     export QT_STYLE_OVERRIDE=kvantum
     export QT_QPA_PLATFORMTHEME=qt6ct
-    export KVANTUM_THEME=Nordic-solid
+    export KVANTUM_THEME=Nordic-Solid-Red
     export QT_QPA_ICONTHEME=Papirus-Dark
-    export KDE_COLOR_SCHEME="Nordic"
+    export KDE_COLOR_SCHEME="Nord Red Dark"
     ;;
 
   # ----------------------------
@@ -75,18 +75,18 @@ case "$DE" in
     # Only force Qt styling (GNOME has no native Qt integration)
     export QT_STYLE_OVERRIDE=kvantum
     export QT_QPA_PLATFORMTHEME=qt6ct
-    export KVANTUM_THEME=Nordic-solid
+    export KVANTUM_THEME=Nordic-Solid-Red
     export QT_QPA_ICONTHEME=Papirus-Dark
-    export KDE_COLOR_SCHEME="Nordic"
+    export KDE_COLOR_SCHEME="Nord Red Dark"
     ;;
 
   # ----------------------------
   # KDE Plasma
   # ----------------------------
   *kde*|*plasma*)
-    export GTK_THEME=Nordic
+    export GTK_THEME=Mint-Y-Dark-Red
     export XCURSOR_THEME=WhiteSur-cursors
-    export KDE_COLOR_SCHEME="Nordic"
+    export KDE_COLOR_SCHEME="Nord Red Dark"
     # DO NOT override QT in KDE
     ;;
 

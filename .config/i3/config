@@ -8,7 +8,7 @@ set $mod Mod4
 # ┃                         Source Files                        ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 include = ~/.config/i3/configs/autostart
-include = ~/.config/i3/configs/theme-Nordic
+include = ~/.config/i3/configs/theme-Nordic-red
 include = ~/.config/i3/configs/keybinds
 include = ~/.config/i3/configs/hardware
 include = ~/.config/i3/configs/windowrules

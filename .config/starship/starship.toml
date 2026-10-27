@@ -1,24 +1,24 @@
 format = """
-[░▒▓](#4c566a)\
-[ 󰤇 ](bg:#4c566a fg:#eceff4)\
-[](bg:#88c0d0 fg:#4c566a)\
+[░▒▓](#70474c)\
+[ 󰤇 ](bg:#70474c fg:#dcdcdc)\
+[](bg:#bf616a fg:#70474c)\
 $directory\
-[](fg:#88c0d0 bg:#3b4252)\
+[](fg:#bf616a bg:#3b2f30)\
 $git_branch\
 $git_status\
-[](fg:#3b4252 bg:#2e3440)\
+[](fg:#3b2f30 bg:#2e2e2e)\
 $nodejs\
 $rust\
 $golang\
 $php\
-[](fg:#2e3440 bg:#242933)\
+[](fg:#2e2e2e bg:#1d1d1d)\
 $time\
-[ ](fg:#242933)\
+[ ](fg:#1d1d1d)\
 \n$character"""
 command_timeout = 2000
 
 [directory]
-style = "fg:#2e3440 bg:#88c0d0"
+style = "fg:#f8dfe2 bg:#bf616a"
 format = "[ $path ]($style)"
 truncation_length = 3
 truncation_symbol = "…/"
@@ -31,39 +31,35 @@ truncation_symbol = "…/"
 
 [git_branch]
 symbol = ""
-style = "bg:#3b4252"
-format = '[[ $symbol $branch ](fg:#eceff4 bg:#3b4252)]($style)'
+style = "bg:#3b2f30"
+format = '[[ $symbol $branch ](fg:#f8dfe2 bg:#3b2f30)]($style)'
 
 [git_status]
-style = "bg:#3b4252"
-format = '[[($all_status$ahead_behind )](fg:#88c0d0 bg:#3b4252)]($style)'
+style = "bg:#3b2f30"
+format = '[[($all_status$ahead_behind )](fg:#f8dfe2 bg:#3b2f30)]($style)'
 
 [nodejs]
 symbol = ""
-style = "bg:#2e3440"
-format = '[[ $symbol ($version) ](fg:#a3be8c bg:#2e3440)]($style)'
+style = "bg:#2e2e2e"
+format = '[[ $symbol ($version) ](fg:#f8dfe2 bg:#2e2e2e)]($style)'
 
 [rust]
 symbol = ""
-style = "bg:#2e3440"
-format = '[[ $symbol ($version) ](fg:#d08770 bg:#2e3440)]($style)'
+style = "bg:#2e2e2e"
+format = '[[ $symbol ($version) ](fg:#f8dfe2 bg:#2e2e2e)]($style)'
 
 [golang]
-symbol = ""
-style = "bg:#2e3440"
-format = '[[ $symbol ($version) ](fg:#81a1c1 bg:#2e3440)]($style)'
+symbol = "ﳑ"
+style = "bg:#2e2e2e"
+format = '[[ $symbol ($version) ](fg:#f8dfe2 bg:#2e2e2e)]($style)'
 
 [php]
 symbol = ""
-style = "bg:#2e3440"
-format = '[[ $symbol ($version) ](fg:#b48ead bg:#2e3440)]($style)'
+style = "bg:#2e2e2e"
+format = '[[ $symbol ($version) ](fg:#f8dfe2 bg:#2e2e2e)]($style)'
 
 [time]
 disabled = false
-time_format = "%R"
-style = "bg:#242933"
-format = '[[  $time ](fg:#eceff4 bg:#242933)]($style)'
-
-[character]
-success_symbol = "[❯](bold #88c0d0)"
-error_symbol = "[❯](bold #bf616a)"
+time_format = "%I:%M %P"
+style = "bg:#1d1d1d"
+format = '[[  $time ](fg:#d08791 bg:#1d1d1d)]($style)'

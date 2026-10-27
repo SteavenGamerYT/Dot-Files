@@ -7,7 +7,7 @@ set $mod Mod4
 # ┃                         Source Files                        ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 include ~/.config/sway/configs/autostart
-include ~/.config/sway/configs/theme-Nordic
+include ~/.config/sway/configs/theme-Nordic-red
 #include ~/.config/sway/configs/laptop
 include ~/.config/sway/configs/keybinds-qwerty
 #include ~/.config/sway/configs/keybinds-dvorak
