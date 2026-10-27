@@ -27,9 +27,9 @@
         "bluetooth",
         "network",
         "clock",
+        "custom/power",
         "custom/weather",
         "custom/updates",
-        "custom/power",
         "tray",
         "custom/notification"
     ],
