@@ -167,6 +167,7 @@ if [ "$DRY_RUN" = false ]; then
     find "$DOTFILES_DIR/scripts" -type f -name "*.sh" -exec chmod +x {} + 2>/dev/null || true
     [ -f "$DOTFILES_DIR/theme.sh" ] && chmod +x "$DOTFILES_DIR/theme.sh"
     [ -f "$DOTFILES_DIR/theme2.sh" ] && chmod +x "$DOTFILES_DIR/theme2.sh"
+    [ -f "$DOTFILES_DIR/theme3.sh" ] && chmod +x "$DOTFILES_DIR/theme3.sh"
 fi
 
 echo ""

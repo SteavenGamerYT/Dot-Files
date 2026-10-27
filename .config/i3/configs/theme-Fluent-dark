@@ -1,6 +1,6 @@
 font pango:Roboto Regular 12
 
-exec_always --no-startup-id gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+exec_always --no-startup-id gsettings set org.gnome.desktop.interface gtk-theme 'Fluent-Dark'
 exec_always --no-startup-id gsettings set org.gnome.desktop.interface icon-theme 'Fluent-dark'
 exec_always --no-startup-id gsettings set org.gnome.desktop.interface cursor-theme 'Fluent-cursors'
 exec_always --no-startup-id gsettings set org.gnome.desktop.interface cursor-size 24

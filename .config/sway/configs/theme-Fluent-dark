@@ -2,7 +2,7 @@ font pango:Roboto Regular 12
 
 set $gnome-schema org.gnome.desktop.interface
 exec_always {
-    gsettings set $gnome-schema gtk-theme 'Adwaita-dark'
+    gsettings set $gnome-schema gtk-theme 'Fluent-Dark'
     gsettings set $gnome-schema icon-theme 'Fluent-dark'
     gsettings set $gnome-schema cursor-theme 'Fluent-cursors'
     gsettings set $gnome-schema cursor-size 24

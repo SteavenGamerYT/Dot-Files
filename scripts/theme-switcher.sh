@@ -127,7 +127,11 @@ case "$THEME" in
         ;;
     fluent|fluent-dark|adwaita|adwaita-dark|dark|3)
         DISPLAY_NAME="Fluent Dark (Adwaita Dark)"
-        GTK_THEME="Adwaita-dark"
+        if [ -d "/usr/share/themes/Fluent-Dark" ] || [ -d "$HOME/.local/share/themes/Fluent-Dark" ] || [ -d "$HOME/.themes/Fluent-Dark" ]; then
+            GTK_THEME="Fluent-Dark"
+        else
+            GTK_THEME="Adwaita-dark"
+        fi
         if [ -d "/usr/share/icons/Fluent-dark" ] || [ -d "$HOME/.local/share/icons/Fluent-dark" ] || [ -d "$HOME/.icons/Fluent-dark" ]; then
             ICON_THEME="Fluent-dark"
         else
@@ -203,6 +207,27 @@ for prof in "$DOTFILES_DIR/.profile" "$HOME/.profile"; do
 done
 
 # ------------------------------------------------------------------------------
+# 1b. Systemd User Environment (~/.config/environment.d/10-user.conf)
+# ------------------------------------------------------------------------------
+for env_file in "$DOTFILES_DIR/.config/environment.d/10-user.conf" "$HOME/.config/environment.d/10-user.conf"; do
+    if [ -f "$env_file" ]; then
+        safe_sed "s|^GTK_THEME=.*|GTK_THEME=$GTK_THEME|" "$env_file"
+        safe_sed "s|^ICON_THEME=.*|ICON_THEME=$ICON_THEME|" "$env_file"
+        safe_sed "s|^QT_QPA_ICONTHEME=.*|QT_QPA_ICONTHEME=$ICON_THEME|" "$env_file"
+        safe_sed "s|^CURSOR_THEME=.*|CURSOR_THEME=$CURSOR_THEME|" "$env_file"
+        safe_sed "s|^QT_QT_CURSORTHEME=.*|QT_QT_CURSORTHEME=$CURSOR_THEME|" "$env_file"
+        safe_sed "s|^QT_QT5_CURSORTHEME=.*|QT_QT5_CURSORTHEME=$CURSOR_THEME|" "$env_file"
+        safe_sed "s|^QT_QT6_CURSORTHEME=.*|QT_QT6_CURSORTHEME=$CURSOR_THEME|" "$env_file"
+        safe_sed "s|^XCURSOR_THEME=.*|XCURSOR_THEME=$CURSOR_THEME|" "$env_file"
+        safe_sed "s|^KVANTUM_THEME=.*|KVANTUM_THEME=$KVANTUM_THEME|" "$env_file"
+    fi
+done
+
+if command -v systemctl >/dev/null 2>&1; then
+    systemctl --user import-environment GTK_THEME ICON_THEME QT_QPA_ICONTHEME CURSOR_THEME XCURSOR_THEME KVANTUM_THEME 2>/dev/null || true
+fi
+
+# ------------------------------------------------------------------------------
 # 2. GTK 2, 3, 4 Configurations
 # ------------------------------------------------------------------------------
 for prefix in "$DOTFILES_DIR/.config" "$HOME/.config"; do
@@ -252,8 +277,8 @@ for prefix in "$DOTFILES_DIR/.config" "$HOME/.config"; do
 
     # Rofi
     safe_sed "s/^\(\s*\)icon-theme: \".*/\1icon-theme: \"$ROFI_ICON\";/" "$prefix/rofi/config.rasi"
-    safe_sed "s|\(@import \"~/.config/rofi/colors/\)[^\"]*|\1$ROFI_COLORS\"|" "$prefix/rofi/launcher/shared/colors.rasi"
-    safe_sed "s|\(@import \"~/.config/rofi/colors/\)[^\"]*|\1$ROFI_COLORS\"|" "$prefix/rofi/powermenu/shared/colors.rasi"
+    safe_sed "s|@import[[:space:]]*\"~/.config/rofi/colors/.*|@import \"~/.config/rofi/colors/$ROFI_COLORS\"|" "$prefix/rofi/launcher/shared/colors.rasi"
+    safe_sed "s|@import[[:space:]]*\"~/.config/rofi/colors/.*|@import \"~/.config/rofi/colors/$ROFI_COLORS\"|" "$prefix/rofi/powermenu/shared/colors.rasi"
     safe_copy "$DOTFILES_DIR/.config/rofi/$ROFI_CLIP" "$prefix/rofi/clipboard.rasi"
 
     # Kitty
