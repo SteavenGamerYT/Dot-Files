@@ -37,10 +37,7 @@ sed -i 's/^\(\s*\)icon-theme: ".*/\1icon-theme: "Papirus-Dark";/' ~/DotFiles/.co
 sed -i 's|\(@import "~/.config/rofi/colors/\)[^"]*|\1nord.rasi|' ~/DotFiles/.config/rofi/launcher/shared/colors.rasi
 sed -i 's|\(@import "~/.config/rofi/colors/\)[^"]*|\1nord.rasi|' ~/DotFiles/.config/rofi/powermenu/shared/colors.rasi
 sed -i 's|\(include ./\)[^ ]*|\1nord.conf|' ~/DotFiles/.config/kitty/kitty.conf
-cp ~/DotFiles/.config/waybar/PC/Hyprland/style-nordic.css ~/DotFiles/.config/waybar/PC/Hyprland/style.css
-cp ~/DotFiles/.config/waybar/PC/sway/style-nordic.css ~/DotFiles/.config/waybar/PC/sway/style.css
-cp ~/DotFiles/.config/waybar/Laptop/Hyprland/style-nordic.css ~/DotFiles/.config/waybar/Laptop/Hyprland/style.css
-cp ~/DotFiles/.config/waybar/Laptop/sway/style-nordic.css ~/DotFiles/.config/waybar/Laptop/sway/style.css
+cp ~/DotFiles/.config/waybar/style-nordic.css ~/DotFiles/.config/waybar/style.css
 cp ~/DotFiles/.config/swaync/style-nordic.css ~/DotFiles/.config/swaync/style.css
 cp ~/DotFiles/.config/rofi/clipboard-nord.rasi ~/DotFiles/.config/rofi/clipboard.rasi
 cp ~/DotFiles/.config/hypr/scripts/lockscreen-nordic.sh ~/DotFiles/.config/hypr/scripts/lockscreen.sh
