@@ -307,35 +307,102 @@ done
 # ------------------------------------------------------------------------------
 # 3. KDE Plasma & Xsettingsd
 # ------------------------------------------------------------------------------
-for kde_dir in "$HOME/.config" "$DOTFILES_DIR/.config"; do
-    [ -d "$kde_dir" ] || continue
-    safe_sed "s|\(cursorTheme=\).*|\1$CURSOR_THEME|" "$kde_dir/kcminputrc" 2>/dev/null || true
-    safe_sed "s|\(cursorTheme=\).*|\1$CURSOR_THEME|" "$kde_dir/kdedefaults/kcminputrc" 2>/dev/null || true
-    safe_sed "s|\(widgetStyle=\).*|\1kvantum|" "$kde_dir/kdedefaults/kdeglobals" 2>/dev/null || true
-    safe_sed "s|\(ColorScheme=\).*|\1$KDE_COLOR|" "$kde_dir/kdedefaults/kdeglobals" 2>/dev/null || true
-    safe_sed "s|\(Theme=\).*|\1$ICON_THEME|" "$kde_dir/kdedefaults/kdeglobals" 2>/dev/null || true
-    safe_sed "s|\(widgetStyle=\).*|\1kvantum|" "$kde_dir/kdeglobals" 2>/dev/null || true
-    safe_sed "s|\(ColorScheme=\).*|\1$KDE_COLOR|" "$kde_dir/kdeglobals" 2>/dev/null || true
-    safe_sed "s|\(Theme=\).*|\1$ICON_THEME|" "$kde_dir/kdeglobals" 2>/dev/null || true
-    safe_sed "s|\(name=\).*|\1$GTK_THEME|" "$kde_dir/kdedefaults/plasmarc" 2>/dev/null || true
-done
+# Detect KDE configuration tool (Plasma 6 / Plasma 5)
+KWRITECONFIG=""
+if command -v kwriteconfig6 >/dev/null 2>&1; then
+    KWRITECONFIG="kwriteconfig6"
+elif command -v kwriteconfig5 >/dev/null 2>&1; then
+    KWRITECONFIG="kwriteconfig5"
+fi
 
-safe_sed "s|\(Net/ThemeName \"\)[^\"]*|\1$GTK_THEME\"|" "$HOME/.config/xsettingsd/xsettingsd.conf"
-safe_sed "s|\(Gtk/CursorThemeName \"\)[^\"]*|\1$CURSOR_THEME\"|" "$HOME/.config/xsettingsd/xsettingsd.conf"
-safe_sed "s|\(Net/IconThemeName \"\)[^\"]*|\1$ICON_THEME\"|" "$HOME/.config/xsettingsd/xsettingsd.conf"
+PLASMA_DESKTOP_THEME="breeze-dark"
+
+if [ -n "$KWRITECONFIG" ]; then
+    # 1. Update active KDE globals
+    $KWRITECONFIG --file kdeglobals --group General --key ColorScheme "$KDE_COLOR"
+    $KWRITECONFIG --file kdeglobals --group KDE --key widgetStyle "kvantum"
+    $KWRITECONFIG --file kdeglobals --group Icons --key Theme "$ICON_THEME"
+    $KWRITECONFIG --file kdeglobals --group KDE --key LookAndFeelPackage "org.kde.breezedark.desktop"
+
+    # 2. Update Mouse Cursor
+    $KWRITECONFIG --file kcminputrc --group Mouse --key cursorTheme "$CURSOR_THEME"
+
+    # 3. Plasma Desktop Style (panel, taskbar, kickoff menu - MUST be a valid desktop theme, NOT gtk theme)
+    $KWRITECONFIG --file plasmarc --group Theme --key name "$PLASMA_DESKTOP_THEME"
+
+    # 4. Sync kdedefaults so session defaults never revert or fallback to Breeze Light
+    for kdedef in "$HOME/.config/kdedefaults" "$DOTFILES_DIR/.config/kdedefaults"; do
+        if [ -d "$kdedef" ]; then
+            $KWRITECONFIG --file "$kdedef/kdeglobals" --group General --key ColorScheme "$KDE_COLOR"
+            $KWRITECONFIG --file "$kdedef/kdeglobals" --group KDE --key widgetStyle "kvantum"
+            $KWRITECONFIG --file "$kdedef/kdeglobals" --group Icons --key Theme "$ICON_THEME"
+            $KWRITECONFIG --file "$kdedef/kcminputrc" --group Mouse --key cursorTheme "$CURSOR_THEME"
+            $KWRITECONFIG --file "$kdedef/plasmarc" --group Theme --key name "$PLASMA_DESKTOP_THEME"
+            echo "org.kde.breezedark.desktop" > "$kdedef/package" 2>/dev/null || true
+        fi
+    done
+else
+    # Fallback sed if kwriteconfig is not installed
+    for kde_dir in "$HOME/.config" "$DOTFILES_DIR/.config"; do
+        [ -d "$kde_dir" ] || continue
+        safe_sed "s|\(cursorTheme=\).*|\1$CURSOR_THEME|" "$kde_dir/kcminputrc" 2>/dev/null || true
+        safe_sed "s|\(cursorTheme=\).*|\1$CURSOR_THEME|" "$kde_dir/kdedefaults/kcminputrc" 2>/dev/null || true
+        safe_sed "s|\(widgetStyle=\).*|\1kvantum|" "$kde_dir/kdedefaults/kdeglobals" 2>/dev/null || true
+        safe_sed "s|\(ColorScheme=\).*|\1$KDE_COLOR|" "$kde_dir/kdedefaults/kdeglobals" 2>/dev/null || true
+        safe_sed "s|\(Theme=\).*|\1$ICON_THEME|" "$kde_dir/kdedefaults/kdeglobals" 2>/dev/null || true
+        safe_sed "s|\(widgetStyle=\).*|\1kvantum|" "$kde_dir/kdeglobals" 2>/dev/null || true
+        safe_sed "s|\(ColorScheme=\).*|\1$KDE_COLOR|" "$kde_dir/kdeglobals" 2>/dev/null || true
+        safe_sed "s|\(Theme=\).*|\1$ICON_THEME|" "$kde_dir/kdeglobals" 2>/dev/null || true
+        safe_sed "s|\(name=\).*|\1$PLASMA_DESKTOP_THEME|" "$kde_dir/kdedefaults/plasmarc" 2>/dev/null || true
+        safe_sed "s|\(name=\).*|\1$PLASMA_DESKTOP_THEME|" "$kde_dir/plasmarc" 2>/dev/null || true
+    done
+fi
+
+safe_sed "s|\(Net/ThemeName \"\)[^\"]*|\1$GTK_THEME\"|" "$HOME/.config/xsettingsd/xsettingsd.conf" 2>/dev/null || true
+safe_sed "s|\(Gtk/CursorThemeName \"\)[^\"]*|\1$CURSOR_THEME\"|" "$HOME/.config/xsettingsd/xsettingsd.conf" 2>/dev/null || true
+safe_sed "s|\(Net/IconThemeName \"\)[^\"]*|\1$ICON_THEME\"|" "$HOME/.config/xsettingsd/xsettingsd.conf" 2>/dev/null || true
 
 # Apply KDE color scheme live via plasma-apply-colorscheme
 if command -v plasma-apply-colorscheme >/dev/null 2>&1; then
     plasma-apply-colorscheme "$KDE_COLOR" >/dev/null 2>&1 || true
 fi
 
+# Apply KDE desktop theme live (keeps panels and app launcher dark)
+if command -v plasma-apply-desktoptheme >/dev/null 2>&1; then
+    plasma-apply-desktoptheme "$PLASMA_DESKTOP_THEME" >/dev/null 2>&1 || true
+fi
+
+# Apply KDE cursor theme live
+if command -v plasma-apply-cursortheme >/dev/null 2>&1; then
+    plasma-apply-cursortheme "$CURSOR_THEME" >/dev/null 2>&1 || true
+fi
+
+# Notify kde-gtk-config via DBus to accept the GTK theme so KDE doesn't fight it
+if command -v busctl >/dev/null 2>&1; then
+    busctl --user call org.kde.GtkConfig /GtkConfig org.kde.GtkConfig setGtkTheme s "$GTK_THEME" >/dev/null 2>&1 || true
+elif command -v qdbus6 >/dev/null 2>&1; then
+    qdbus6 org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "$GTK_THEME" >/dev/null 2>&1 || true
+elif command -v dbus-send >/dev/null 2>&1; then
+    dbus-send --session --dest=org.kde.GtkConfig --type=method_call /GtkConfig org.kde.GtkConfig.setGtkTheme "string:$GTK_THEME" >/dev/null 2>&1 || true
+fi
+
+# Reload KWin window decorations live
+if command -v qdbus6 >/dev/null 2>&1; then
+    qdbus6 org.kde.KWin /KWin reconfigure >/dev/null 2>&1 || true
+elif command -v qdbus >/dev/null 2>&1; then
+    qdbus org.kde.KWin /KWin reconfigure >/dev/null 2>&1 || true
+fi
+
 # ------------------------------------------------------------------------------
 # 4. Papirus Folder Icons
 # ------------------------------------------------------------------------------
 if command -v papirus-folders >/dev/null 2>&1; then
-    echo "  [icons] Setting Papirus folder color to: $PAPIRUS_FOLDER_COLOR..."
-    papirus-folders -C "$PAPIRUS_FOLDER_COLOR" --theme Papirus-Dark 2>/dev/null || true
+    if [ -w "/usr/share/icons/Papirus-Dark" ] || [ -d "$HOME/.local/share/icons/Papirus-Dark" ] || [ -d "$HOME/.icons/Papirus-Dark" ] || sudo -n true 2>/dev/null; then
+        echo "  [icons] Setting Papirus folder color to: $PAPIRUS_FOLDER_COLOR..."
+        papirus-folders -C "$PAPIRUS_FOLDER_COLOR" --theme Papirus-Dark 2>/dev/null || true
+    fi
 fi
+
 
 # ------------------------------------------------------------------------------
 # 5. GNOME Desktop Interface via gsettings
