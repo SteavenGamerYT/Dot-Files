@@ -67,13 +67,25 @@ fi
 THEME=$(echo "$THEME" | tr '[:upper:]' '[:lower:]')
 
 # ------------------------------------------------------------------------------
-# Ensure Nordic GTK Theme directory is linked
+# Ensure Nordic GTK Theme & KDE Color Schemes are linked
 # ------------------------------------------------------------------------------
 if [ -d "$HOME/Git/Nordic" ]; then
     mkdir -p "$HOME/.themes" "$HOME/.local/share/themes"
     [ ! -e "$HOME/.themes/Nordic" ] && ln -sfn "$HOME/Git/Nordic" "$HOME/.themes/Nordic" 2>/dev/null || true
     [ ! -e "$HOME/.local/share/themes/Nordic" ] && ln -sfn "$HOME/Git/Nordic" "$HOME/.local/share/themes/Nordic" 2>/dev/null || true
 fi
+
+if [ -d "$DOTFILES_DIR/.local/share/color-schemes" ]; then
+    mkdir -p "$HOME/.local/share/color-schemes"
+    for cs in "$DOTFILES_DIR/.local/share/color-schemes"/*; do
+        [ -e "$cs" ] || continue
+        base_cs="$(basename "$cs")"
+        if [ ! -e "$HOME/.local/share/color-schemes/$base_cs" ]; then
+            ln -sfn "$cs" "$HOME/.local/share/color-schemes/$base_cs" 2>/dev/null || cp -f "$cs" "$HOME/.local/share/color-schemes/$base_cs" 2>/dev/null || true
+        fi
+    done
+fi
+
 
 case "$THEME" in
     nordic|nord|blue|1)
@@ -240,20 +252,54 @@ fi
 for prefix in "$DOTFILES_DIR/.config" "$HOME/.config"; do
     [ -d "$prefix" ] || continue
 
+    mkdir -p "$prefix/gtk-2.0" "$prefix/gtk-3.0" "$prefix/gtk-4.0"
+
     # GTK 2
     safe_sed "s|\(gtk-theme-name=\"\)[^\"]*|\1$GTK_THEME|" "$prefix/gtk-2.0/gtkrc"
     safe_sed "s|\(gtk-cursor-theme-name=\"\)[^\"]*|\1$CURSOR_THEME|" "$prefix/gtk-2.0/gtkrc"
     safe_sed "s|\(gtk-icon-theme-name=\"\)[^\"]*|\1$ICON_THEME|" "$prefix/gtk-2.0/gtkrc"
 
     # GTK 3
-    safe_sed "s|\(gtk-theme-name=\).*|\1$GTK_THEME|" "$prefix/gtk-3.0/settings.ini"
-    safe_sed "s|\(gtk-cursor-theme-name=\).*|\1$CURSOR_THEME|" "$prefix/gtk-3.0/settings.ini"
-    safe_sed "s|\(gtk-icon-theme-name=\).*|\1$ICON_THEME|" "$prefix/gtk-3.0/settings.ini"
+    if [ ! -f "$prefix/gtk-3.0/settings.ini" ]; then
+        cat <<EOF > "$prefix/gtk-3.0/settings.ini"
+[Settings]
+gtk-theme-name=$GTK_THEME
+gtk-icon-theme-name=$ICON_THEME
+gtk-cursor-theme-name=$CURSOR_THEME
+gtk-cursor-theme-size=24
+gtk-font-name=Roboto Regular 12
+gtk-application-prefer-dark-theme=1
+gtk-enable-animations=true
+gtk-decoration-layout=icon:minimize,maximize,close
+EOF
+    else
+        safe_sed "s|\(gtk-theme-name=\).*|\1$GTK_THEME|" "$prefix/gtk-3.0/settings.ini"
+        safe_sed "s|\(gtk-cursor-theme-name=\).*|\1$CURSOR_THEME|" "$prefix/gtk-3.0/settings.ini"
+        safe_sed "s|\(gtk-icon-theme-name=\).*|\1$ICON_THEME|" "$prefix/gtk-3.0/settings.ini"
+    fi
+
+    if [ ! -f "$prefix/gtk-3.0/gtk.css" ]; then
+        echo "@import 'colors.css';" > "$prefix/gtk-3.0/gtk.css"
+    fi
 
     # GTK 4 settings.ini
-    safe_sed "s|\(gtk-theme-name=\).*|\1$GTK_THEME|" "$prefix/gtk-4.0/settings.ini"
-    safe_sed "s|\(gtk-cursor-theme-name=\).*|\1$CURSOR_THEME|" "$prefix/gtk-4.0/settings.ini"
-    safe_sed "s|\(gtk-icon-theme-name=\).*|\1$ICON_THEME|" "$prefix/gtk-4.0/settings.ini"
+    if [ ! -f "$prefix/gtk-4.0/settings.ini" ]; then
+        cat <<EOF > "$prefix/gtk-4.0/settings.ini"
+[Settings]
+gtk-theme-name=$GTK_THEME
+gtk-icon-theme-name=$ICON_THEME
+gtk-cursor-theme-name=$CURSOR_THEME
+gtk-cursor-theme-size=24
+gtk-font-name=Roboto Regular 12
+gtk-application-prefer-dark-theme=1
+gtk-enable-animations=true
+gtk-decoration-layout=icon:minimize,maximize,close
+EOF
+    else
+        safe_sed "s|\(gtk-theme-name=\).*|\1$GTK_THEME|" "$prefix/gtk-4.0/settings.ini"
+        safe_sed "s|\(gtk-cursor-theme-name=\).*|\1$CURSOR_THEME|" "$prefix/gtk-4.0/settings.ini"
+        safe_sed "s|\(gtk-icon-theme-name=\).*|\1$ICON_THEME|" "$prefix/gtk-4.0/settings.ini"
+    fi
 
     # GTK 4 Stylesheets (Overriding Libadwaita colors & row selection)
     if [ -f "$DOTFILES_DIR/.config/gtk-4.0/$GTK4_CSS" ]; then
@@ -323,9 +369,72 @@ fi
 
 PLASMA_DESKTOP_THEME="default"  # Breeze desktop theme (follows color scheme, unlike breeze-dark)
 
+apply_kde_colorscheme() {
+    local scheme="$1"
+    local applied=0
+
+    # Locate the .colors file
+    local scheme_file=""
+    if [ -f "$HOME/.local/share/color-schemes/${scheme}.colors" ]; then
+        scheme_file="$HOME/.local/share/color-schemes/${scheme}.colors"
+    elif [ -f "$DOTFILES_DIR/.local/share/color-schemes/${scheme}.colors" ]; then
+        scheme_file="$DOTFILES_DIR/.local/share/color-schemes/${scheme}.colors"
+    elif [ -f "/usr/share/color-schemes/${scheme}.colors" ]; then
+        scheme_file="/usr/share/color-schemes/${scheme}.colors"
+    fi
+
+    # Temporarily reset ColorScheme in kdeglobals so plasma-apply-colorscheme
+    # never skips applying the full palette when the same theme is re-selected
+    if [ -n "$KWRITECONFIG" ]; then
+        $KWRITECONFIG --file kdeglobals --group General --key ColorScheme "" >/dev/null 2>&1 || true
+    fi
+
+    # 1. Primary method: plasma-apply-colorscheme (try native first, then offscreen if platform plugin crashes)
+    if command -v plasma-apply-colorscheme >/dev/null 2>&1; then
+        if plasma-apply-colorscheme "$scheme" >/dev/null 2>&1; then
+            applied=1
+        elif QT_QPA_PLATFORM=offscreen plasma-apply-colorscheme "$scheme" >/dev/null 2>&1; then
+            applied=1
+        fi
+    fi
+
+    # 2. Robust fallback: If plasma-apply-colorscheme is unavailable, failed, or dumped core,
+    # directly parse and merge the .colors file into ~/.config/kdeglobals
+    if [ "$applied" -eq 0 ] && [ -n "$scheme_file" ] && [ -f "$scheme_file" ]; then
+        python3 -c "
+import configparser, os
+cs_path = '$scheme_file'
+kde_path = os.path.expanduser('~/.config/kdeglobals')
+if os.path.exists(cs_path):
+    cs = configparser.RawConfigParser()
+    cs.read(cs_path)
+    kde = configparser.RawConfigParser()
+    if os.path.exists(kde_path):
+        kde.read(kde_path)
+    for sec in cs.sections():
+        if not kde.has_section(sec):
+            kde.add_section(sec)
+        for k, v in cs.items(sec):
+            kde.set(sec, k, v)
+    if not kde.has_section('General'):
+        kde.add_section('General')
+    kde.set('General', 'ColorScheme', '$scheme')
+    with open(kde_path, 'w') as f:
+        kde.write(f)
+" 2>/dev/null || true
+    fi
+
+    # Ensure ColorScheme key is explicitly recorded
+    if [ -n "$KWRITECONFIG" ]; then
+        $KWRITECONFIG --file kdeglobals --group General --key ColorScheme "$scheme" >/dev/null 2>&1 || true
+    fi
+}
+
+# Apply Color Scheme first so full palette is refreshed
+apply_kde_colorscheme "$KDE_COLOR"
+
 if [ -n "$KWRITECONFIG" ]; then
     # 1. Update active KDE globals
-    $KWRITECONFIG --file kdeglobals --group General --key ColorScheme "$KDE_COLOR"
     $KWRITECONFIG --file kdeglobals --group KDE --key widgetStyle "kvantum"
     $KWRITECONFIG --file kdeglobals --group Icons --key Theme "$ICON_THEME"
     $KWRITECONFIG --file kdeglobals --group KDE --key LookAndFeelPackage "org.kde.breezedark.desktop"
@@ -368,19 +477,16 @@ safe_sed "s|\(Net/ThemeName \"\)[^\"]*|\1$GTK_THEME\"|" "$HOME/.config/xsettings
 safe_sed "s|\(Gtk/CursorThemeName \"\)[^\"]*|\1$CURSOR_THEME\"|" "$HOME/.config/xsettingsd/xsettingsd.conf" 2>/dev/null || true
 safe_sed "s|\(Net/IconThemeName \"\)[^\"]*|\1$ICON_THEME\"|" "$HOME/.config/xsettingsd/xsettingsd.conf" 2>/dev/null || true
 
-# Apply KDE color scheme live via plasma-apply-colorscheme
-if command -v plasma-apply-colorscheme >/dev/null 2>&1; then
-    plasma-apply-colorscheme "$KDE_COLOR" >/dev/null 2>&1 || true
-fi
-
 # Apply KDE desktop theme live (keeps panels and app launcher dark)
 if command -v plasma-apply-desktoptheme >/dev/null 2>&1; then
-    plasma-apply-desktoptheme "$PLASMA_DESKTOP_THEME" >/dev/null 2>&1 || true
+    plasma-apply-desktoptheme "$PLASMA_DESKTOP_THEME" >/dev/null 2>&1 || \
+    QT_QPA_PLATFORM=offscreen plasma-apply-desktoptheme "$PLASMA_DESKTOP_THEME" >/dev/null 2>&1 || true
 fi
 
 # Apply KDE cursor theme live
 if command -v plasma-apply-cursortheme >/dev/null 2>&1; then
-    plasma-apply-cursortheme "$CURSOR_THEME" >/dev/null 2>&1 || true
+    plasma-apply-cursortheme "$CURSOR_THEME" >/dev/null 2>&1 || \
+    QT_QPA_PLATFORM=offscreen plasma-apply-cursortheme "$CURSOR_THEME" >/dev/null 2>&1 || true
 fi
 
 # Notify kde-gtk-config via DBus to accept the GTK theme so KDE doesn't fight it
@@ -388,15 +494,23 @@ if command -v busctl >/dev/null 2>&1; then
     busctl --user call org.kde.GtkConfig /GtkConfig org.kde.GtkConfig setGtkTheme s "$GTK_THEME" >/dev/null 2>&1 || true
 elif command -v qdbus6 >/dev/null 2>&1; then
     qdbus6 org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "$GTK_THEME" >/dev/null 2>&1 || true
+elif command -v qdbus >/dev/null 2>&1; then
+    qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "$GTK_THEME" >/dev/null 2>&1 || true
 elif command -v dbus-send >/dev/null 2>&1; then
     dbus-send --session --dest=org.kde.GtkConfig --type=method_call /GtkConfig org.kde.GtkConfig.setGtkTheme "string:$GTK_THEME" >/dev/null 2>&1 || true
 fi
 
-# Reload KWin window decorations live
+# Reload KWin window decorations live & notify kded
 if command -v qdbus6 >/dev/null 2>&1; then
     qdbus6 org.kde.KWin /KWin reconfigure >/dev/null 2>&1 || true
+    qdbus6 org.kde.kded6 /kded org.kde.kded6.reconfigure >/dev/null 2>&1 || true
 elif command -v qdbus >/dev/null 2>&1; then
     qdbus org.kde.KWin /KWin reconfigure >/dev/null 2>&1 || true
+fi
+
+# Broadcast palette update via KGlobalSettings
+if command -v dbus-send >/dev/null 2>&1; then
+    dbus-send --session --dest=org.kde.KGlobalSettings --type=method_call /KGlobalSettings org.kde.KGlobalSettings.notifyChange int32:0 int32:0 >/dev/null 2>&1 || true
 fi
 
 # ------------------------------------------------------------------------------

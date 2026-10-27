@@ -15,6 +15,12 @@ nohup.out
 .config/hypr/monitors.conf
 .config/hypr/workspaces.conf
 .config/mpv/memo-history.log
+.config/gtk-3.0/colors.css
+.config/gtk-4.0/colors.css
+.config/gtk-3.0/settings.ini
+.config/gtk-4.0/settings.ini
+.config/gtk-4.0/gtk.css
+.config/gtk-4.0/gtk-dark.css
 
 # Legacy paths (for compatibility)
 DotFiles/.config/ulauncher/user-themes/libadwaita/
@@ -27,3 +33,9 @@ DotFiles/.config/hypr/wallpaper.conf
 DotFiles/.config/hypr/monitors.conf
 DotFiles/.config/hypr/workspaces.conf
 DotFiles/.config/mpv/memo-history.log
+DotFiles/.config/gtk-3.0/colors.css
+DotFiles/.config/gtk-4.0/colors.css
+DotFiles/.config/gtk-3.0/settings.ini
+DotFiles/.config/gtk-4.0/settings.ini
+DotFiles/.config/gtk-4.0/gtk.css
+DotFiles/.config/gtk-4.0/gtk-dark.css

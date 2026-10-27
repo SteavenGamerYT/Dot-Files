@@ -227,6 +227,34 @@ if [ -d "$DOTFILES_DIR/.local/share/color-schemes" ]; then
     link_target "$DOTFILES_DIR/.local/share/color-schemes" "$HOME/.local/share/color-schemes"
 fi
 
+# Initialize default GTK configurations if missing
+if [ "$DRY_RUN" = false ]; then
+    mkdir -p "$DOTFILES_DIR/.config/gtk-3.0" "$DOTFILES_DIR/.config/gtk-4.0"
+    if [ ! -f "$DOTFILES_DIR/.config/gtk-3.0/settings.ini" ]; then
+        cat <<'EOF' > "$DOTFILES_DIR/.config/gtk-3.0/settings.ini"
+[Settings]
+gtk-theme-name=Nordic
+gtk-icon-theme-name=Papirus-Dark
+gtk-cursor-theme-name=Nordzy-cursors
+gtk-cursor-theme-size=24
+gtk-font-name=Roboto Regular 12
+gtk-application-prefer-dark-theme=1
+gtk-enable-animations=true
+gtk-decoration-layout=icon:minimize,maximize,close
+EOF
+    fi
+    if [ ! -f "$DOTFILES_DIR/.config/gtk-4.0/settings.ini" ]; then
+        cp -f "$DOTFILES_DIR/.config/gtk-3.0/settings.ini" "$DOTFILES_DIR/.config/gtk-4.0/settings.ini"
+    fi
+    if [ ! -f "$DOTFILES_DIR/.config/gtk-3.0/gtk.css" ]; then
+        echo "@import 'colors.css';" > "$DOTFILES_DIR/.config/gtk-3.0/gtk.css"
+    fi
+    if [ ! -e "$DOTFILES_DIR/.config/gtk-4.0/gtk.css" ] && [ -f "$DOTFILES_DIR/.config/gtk-4.0/gtk-nordic.css" ]; then
+        ln -sfn gtk-nordic.css "$DOTFILES_DIR/.config/gtk-4.0/gtk.css"
+        ln -sfn gtk-nordic.css "$DOTFILES_DIR/.config/gtk-4.0/gtk-dark.css"
+    fi
+fi
+
 # Make scripts executable
 if [ "$DRY_RUN" = false ]; then
     find "$DOTFILES_DIR/scripts" -type f -name "*.sh" -exec chmod +x {} + 2>/dev/null || true
