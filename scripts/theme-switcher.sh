@@ -9,6 +9,12 @@
 
 set -euo pipefail
 
+# Ensure UTF-8 locale so Qt/KDE utilities (kwriteconfig, plasma-apply-*) do not warn or abort on ANSI_X3.4-1968
+if [ "${LC_ALL:-}" = "C" ] || [ "${LC_ALL:-}" = "POSIX" ] || [ -z "${LANG:-}" ] || [ "${LANG:-}" = "C" ] || [ "${LANG:-}" = "POSIX" ]; then
+    export LC_ALL="C.UTF-8"
+    export LANG="C.UTF-8"
+fi
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOTFILES_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
@@ -315,7 +321,7 @@ elif command -v kwriteconfig5 >/dev/null 2>&1; then
     KWRITECONFIG="kwriteconfig5"
 fi
 
-PLASMA_DESKTOP_THEME="breeze-dark"
+PLASMA_DESKTOP_THEME="default"  # Breeze desktop theme (follows color scheme, unlike breeze-dark)
 
 if [ -n "$KWRITECONFIG" ]; then
     # 1. Update active KDE globals
