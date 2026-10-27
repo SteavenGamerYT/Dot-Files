@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # Unified Desktop Theme Switcher
-# Supports:
-#   1) Nordic         - Pure Cool Nordic (Frost, Polar Night, Blue GTK & Folders)
-#   2) Nordic Red     - Nordic Red / Adwaita Red (Burgundy, Red Accents, Mint-Y-Dark-Red)
-#   3) Fluent Dark    - Fluent / Adwaita Dark
+# Supports 3 Complete Themes:
+#   1) Nordic         - Full Blue (Frost cyan/blue, Nordic GTK/Kvantum, Nordic folders)
+#   2) Nordic Red     - Full Red (Burgundy/Red, Mint-Y-Dark-Red, Red folders & accents)
+#   3) Fluent Dark    - Dark Adwaita (Adwaita-dark GTK, Fluent-dark icons, GNOME blue accents)
 # ==============================================================================
 
 set -euo pipefail
@@ -13,14 +13,17 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOTFILES_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 usage() {
-    echo "Usage: $(basename "$0") [nordic | red | fluent]"
-    echo ""
-    echo "Available themes:"
-    echo "  nordic      - Pure Nordic theme (Frost cyan/blue, Nordic GTK/Kvantum, Papirus-Nordic)"
-    echo "  red | nordic-red | adwaita-red"
-    echo "              - Nordic Red (Mint-Y-Dark-Red / WhiteSur-Dark-red, style-red, Papirus-Red)"
-    echo "  fluent | adwaita"
-    echo "              - Fluent Dark / Adwaita Dark"
+    cat <<EOF
+Usage: $(basename "$0") [nordic | red | fluent]
+
+Available themes:
+  nordic, nord, 1
+      Full Blue Nordic theme (Frost cyan/blue, Nordic GTK/Kvantum, Papirus-Nordic folders)
+  red, nordic-red, adwaita-red, 2
+      Full Red Nordic Red theme (Mint-Y-Dark-Red GTK, style-red Waybar, Papirus-Red folders)
+  fluent, adwaita, adwaita-dark, 3
+      Dark Adwaita / Fluent Dark theme (Adwaita-dark GTK, Fluent icons, dark styling)
+EOF
     exit 1
 }
 
@@ -29,12 +32,12 @@ THEME="${1:-}"
 # Interactive selection if no argument is supplied
 if [ -z "$THEME" ]; then
     if [ -t 0 ]; then
-        echo "=================================="
+        echo "=================================================="
         echo " Select Desktop Theme:"
-        echo "=================================="
-        echo " 1) Nordic (Pure Cool Frost)"
-        echo " 2) Nordic Red (Adwaita Red / Mint-Y-Dark-Red)"
-        echo " 3) Fluent Dark (Adwaita Dark)"
+        echo "=================================================="
+        echo " 1) Nordic       (Full Blue / Frost Cyan)"
+        echo " 2) Nordic Red   (Full Red / Adwaita Red)"
+        echo " 3) Fluent Dark  (Adwaita Dark / Fluent)"
         read -r -p "Enter choice [1-3]: " choice
         case "$choice" in
             1) THEME="nordic" ;;
@@ -43,11 +46,11 @@ if [ -z "$THEME" ]; then
             *) echo "Invalid choice"; exit 1 ;;
         esac
     elif command -v rofi >/dev/null 2>&1; then
-        THEME=$(printf "1. Nordic\n2. Nordic Red (Adwaita Red)\n3. Fluent Dark" | rofi -dmenu -p "Select Theme" || true)
+        THEME=$(printf "1. Nordic (Full Blue)\n2. Nordic Red (Full Red)\n3. Fluent Dark (Adwaita Dark)" | rofi -dmenu -p "Select Theme" || true)
         case "$THEME" in
-            *Nordic\ Red*|*2*) THEME="nordic-red" ;;
-            *Nordic*|*1*)     THEME="nordic" ;;
-            *Fluent*|*3*)     THEME="fluent" ;;
+            *Red*|*2*)    THEME="nordic-red" ;;
+            *Nordic*|*1*) THEME="nordic" ;;
+            *Fluent*|*3*) THEME="fluent" ;;
             *) exit 0 ;;
         esac
     else
@@ -57,18 +60,28 @@ fi
 
 THEME=$(echo "$THEME" | tr '[:upper:]' '[:lower:]')
 
+# ------------------------------------------------------------------------------
+# Ensure Nordic GTK Theme directory is linked
+# ------------------------------------------------------------------------------
+if [ -d "$HOME/Git/Nordic" ]; then
+    mkdir -p "$HOME/.themes" "$HOME/.local/share/themes"
+    [ ! -e "$HOME/.themes/Nordic" ] && ln -sfn "$HOME/Git/Nordic" "$HOME/.themes/Nordic" 2>/dev/null || true
+    [ ! -e "$HOME/.local/share/themes/Nordic" ] && ln -sfn "$HOME/Git/Nordic" "$HOME/.local/share/themes/Nordic" 2>/dev/null || true
+fi
+
 case "$THEME" in
-    nordic|nord|1)
-        DISPLAY_NAME="Pure Nordic"
+    nordic|nord|blue|1)
+        DISPLAY_NAME="Pure Nordic (Full Blue)"
         GTK_THEME="Nordic"
         ICON_THEME="Papirus-Dark"
         CURSOR_THEME="WhiteSur-cursors"
         KVANTUM_THEME="Nordic-solid"
         KVANTUM_CONF="Nordic-Solid"
         KDE_COLOR="Nordic"
-        HYPR_THEME="Nordic.conf"
+        HYPR_THEME="theme-Nordic.conf"
         SWAY_THEME="theme-Nordic"
         I3_THEME="theme-Nordic"
+        BSPWM_BORDER="#88c0d0"
         ROFI_ICON="Papirus-Dark"
         ROFI_COLORS="nord.rasi"
         ROFI_CLIP="clipboard-nord.rasi"
@@ -82,8 +95,8 @@ case "$THEME" in
         PAPIRUS_FOLDER_COLOR="nordic"
         ;;
     red|nordic-red|nord-red|adwaita-red|2)
-        DISPLAY_NAME="Nordic Red (Adwaita Red)"
-        # Use Mint-Y-Dark-Red if installed, otherwise WhiteSur-Dark-red
+        DISPLAY_NAME="Nordic Red (Full Red / Adwaita Red)"
+        # Prefer Mint-Y-Dark-Red, fallback to WhiteSur-Dark-red
         if [ -d "/usr/share/themes/Mint-Y-Dark-Red" ] || [ -d "$HOME/.local/share/themes/Mint-Y-Dark-Red" ]; then
             GTK_THEME="Mint-Y-Dark-Red"
         elif [ -d "$HOME/.themes/WhiteSur-Dark-red" ]; then
@@ -95,10 +108,11 @@ case "$THEME" in
         CURSOR_THEME="WhiteSur-cursors"
         KVANTUM_THEME="Nordic-Solid-Red"
         KVANTUM_CONF="Nordic-Solid-Red"
-        KDE_COLOR="Nordic"
+        KDE_COLOR="Nord Red Dark"
         HYPR_THEME="theme-Nordic-red.conf"
         SWAY_THEME="theme-Nordic-red"
         I3_THEME="theme-Nordic-red"
+        BSPWM_BORDER="#bf616a"
         ROFI_ICON="Papirus-Dark"
         ROFI_COLORS="nord-red.rasi"
         ROFI_CLIP="clipboard-nord-red.rasi"
@@ -111,10 +125,9 @@ case "$THEME" in
         GTK4_CSS="gtk-red.css"
         PAPIRUS_FOLDER_COLOR="red"
         ;;
-    fluent|fluent-dark|adwaita|adwaita-dark|3)
+    fluent|fluent-dark|adwaita|adwaita-dark|dark|3)
         DISPLAY_NAME="Fluent Dark (Adwaita Dark)"
-        GTK_THEME="Fluent-Dark"
-        # Check if Fluent-dark icons exist, fallback to Papirus-Dark
+        GTK_THEME="Adwaita-dark"
         if [ -d "/usr/share/icons/Fluent-dark" ] || [ -d "$HOME/.local/share/icons/Fluent-dark" ] || [ -d "$HOME/.icons/Fluent-dark" ]; then
             ICON_THEME="Fluent-dark"
         else
@@ -131,6 +144,7 @@ case "$THEME" in
         HYPR_THEME="theme-Fluent-dark.conf"
         SWAY_THEME="theme-Fluent-dark"
         I3_THEME="theme-Fluent-dark"
+        BSPWM_BORDER="#3584e4"
         ROFI_ICON="$ICON_THEME"
         ROFI_COLORS="adwaita-dark.rasi"
         ROFI_CLIP="clipboard-adwaita-dark.rasi"
@@ -163,12 +177,15 @@ safe_copy() {
     local src="$1"
     local dest="$2"
     if [ -f "$src" ]; then
-        cp "$src" "$dest"
+        if [ -e "$dest" ] && [ "$src" -ef "$dest" ]; then
+            return 0
+        fi
+        cp -f "$src" "$dest"
     fi
 }
 
 # ------------------------------------------------------------------------------
-# 1. Shell Environment & Profiles
+# 1. Shell Profiles (~/.profile & repo .profile)
 # ------------------------------------------------------------------------------
 for prof in "$DOTFILES_DIR/.profile" "$HOME/.profile"; do
     if [ -f "$prof" ]; then
@@ -181,13 +198,16 @@ for prof in "$DOTFILES_DIR/.profile" "$HOME/.profile"; do
         safe_sed "s/^\(\s*\)export XCURSOR_THEME=.*/\1export XCURSOR_THEME=$CURSOR_THEME/" "$prof"
         safe_sed "s/^\(\s*\)export GTK_THEME=.*/\1export GTK_THEME=$GTK_THEME/" "$prof"
         safe_sed "s/^\(\s*\)export KVANTUM_THEME=.*/\1export KVANTUM_THEME=$KVANTUM_THEME/" "$prof"
+        safe_sed "s/^\(\s*\)export KDE_COLOR_SCHEME=.*/\1export KDE_COLOR_SCHEME=\"$KDE_COLOR\"/" "$prof"
     fi
 done
 
 # ------------------------------------------------------------------------------
-# 2. GTK 2, 3, 4 Configs
+# 2. GTK 2, 3, 4 Configurations
 # ------------------------------------------------------------------------------
 for prefix in "$DOTFILES_DIR/.config" "$HOME/.config"; do
+    [ -d "$prefix" ] || continue
+
     # GTK 2
     safe_sed "s|\(gtk-theme-name=\"\)[^\"]*|\1$GTK_THEME|" "$prefix/gtk-2.0/gtkrc"
     safe_sed "s|\(gtk-cursor-theme-name=\"\)[^\"]*|\1$CURSOR_THEME|" "$prefix/gtk-2.0/gtkrc"
@@ -198,33 +218,42 @@ for prefix in "$DOTFILES_DIR/.config" "$HOME/.config"; do
     safe_sed "s|\(gtk-cursor-theme-name=\).*|\1$CURSOR_THEME|" "$prefix/gtk-3.0/settings.ini"
     safe_sed "s|\(gtk-icon-theme-name=\).*|\1$ICON_THEME|" "$prefix/gtk-3.0/settings.ini"
 
-    # GTK 4 Settings
+    # GTK 4 settings.ini
     safe_sed "s|\(gtk-theme-name=\).*|\1$GTK_THEME|" "$prefix/gtk-4.0/settings.ini"
     safe_sed "s|\(gtk-cursor-theme-name=\).*|\1$CURSOR_THEME|" "$prefix/gtk-4.0/settings.ini"
     safe_sed "s|\(gtk-icon-theme-name=\).*|\1$ICON_THEME|" "$prefix/gtk-4.0/settings.ini"
 
-    # GTK 4 Stylesheets (Overriding Libadwaita colors)
+    # GTK 4 Stylesheets (Overriding Libadwaita colors & row selection)
     if [ -f "$DOTFILES_DIR/.config/gtk-4.0/$GTK4_CSS" ]; then
-        cp "$DOTFILES_DIR/.config/gtk-4.0/$GTK4_CSS" "$prefix/gtk-4.0/gtk.css" 2>/dev/null || true
-        cp "$DOTFILES_DIR/.config/gtk-4.0/$GTK4_CSS" "$prefix/gtk-4.0/gtk-dark.css" 2>/dev/null || true
+        if [ "$prefix" != "$DOTFILES_DIR/.config" ]; then
+            safe_copy "$DOTFILES_DIR/.config/gtk-4.0/gtk-nordic.css" "$prefix/gtk-4.0/gtk-nordic.css"
+            safe_copy "$DOTFILES_DIR/.config/gtk-4.0/gtk-red.css" "$prefix/gtk-4.0/gtk-red.css"
+            safe_copy "$DOTFILES_DIR/.config/gtk-4.0/gtk-adwaita.css" "$prefix/gtk-4.0/gtk-adwaita.css"
+        fi
+        (cd "$prefix/gtk-4.0" && ln -sfn "$GTK4_CSS" gtk.css && ln -sfn "$GTK4_CSS" gtk-dark.css) 2>/dev/null || true
     fi
 
     # Kvantum
     safe_sed "s/^\(\s*\)theme=.*/\1theme=$KVANTUM_CONF/" "$prefix/Kvantum/kvantum.kvconfig"
 
-    # Hyprland
-    safe_sed "s|\(^\s*source = ~/.config/hypr/config/\)[^/]*|\1$HYPR_THEME|" "$prefix/hypr/hyprland.conf"
+    # Hyprland (Match only theme-*.conf, preserving all other source directives)
+    safe_sed "s|^\s*source[[:space:]=]*.*hypr/config/theme-[^[:space:]]*|source = ~/.config/hypr/config/$HYPR_THEME|" "$prefix/hypr/hyprland.conf"
 
-    # Sway
-    safe_sed "s|^include *= *~/.config/sway/configs/theme-[^[:space:]]*|include = ~/.config/sway/configs/$SWAY_THEME|" "$prefix/sway/config"
+    # Sway (Match 'include ...sway/configs/theme-*' with or without '=')
+    safe_sed "s|^include[[:space:]=]*.*sway/configs/theme-[^[:space:]]*|include ~/.config/sway/configs/$SWAY_THEME|" "$prefix/sway/config"
 
-    # i3
-    safe_sed "s|^include *= *~/.config/i3/configs/theme-[^[:space:]]*|include = ~/.config/i3/configs/$I3_THEME|" "$prefix/i3/config"
+    # i3 (Match 'include = ...i3/configs/theme-*')
+    safe_sed "s|^include[[:space:]=]*.*i3/configs/theme-[^[:space:]]*|include = ~/.config/i3/configs/$I3_THEME|" "$prefix/i3/config"
+
+    # BSPWM startup persistence
+    safe_sed "s|\(gsettings set org.gnome.desktop.interface gtk-theme '\)[^']*|\1$GTK_THEME|" "$prefix/bspwm/bspwmrc"
+    safe_sed "s|\(gsettings set org.gnome.desktop.interface icon-theme '\)[^']*|\1$ICON_THEME|" "$prefix/bspwm/bspwmrc"
+    safe_sed "s|\(gsettings set org.gnome.desktop.interface cursor-theme '\)[^']*|\1$CURSOR_THEME|" "$prefix/bspwm/bspwmrc"
 
     # Rofi
     safe_sed "s/^\(\s*\)icon-theme: \".*/\1icon-theme: \"$ROFI_ICON\";/" "$prefix/rofi/config.rasi"
-    safe_sed "s|\(@import \"~/.config/rofi/colors/\)[^\"]*|\1$ROFI_COLORS|" "$prefix/rofi/launcher/shared/colors.rasi"
-    safe_sed "s|\(@import \"~/.config/rofi/colors/\)[^\"]*|\1$ROFI_COLORS|" "$prefix/rofi/powermenu/shared/colors.rasi"
+    safe_sed "s|\(@import \"~/.config/rofi/colors/\)[^\"]*|\1$ROFI_COLORS\"|" "$prefix/rofi/launcher/shared/colors.rasi"
+    safe_sed "s|\(@import \"~/.config/rofi/colors/\)[^\"]*|\1$ROFI_COLORS\"|" "$prefix/rofi/powermenu/shared/colors.rasi"
     safe_copy "$DOTFILES_DIR/.config/rofi/$ROFI_CLIP" "$prefix/rofi/clipboard.rasi"
 
     # Kitty
@@ -250,7 +279,7 @@ for prefix in "$DOTFILES_DIR/.config" "$HOME/.config"; do
 done
 
 # ------------------------------------------------------------------------------
-# 3. KDE & Xsettingsd Configurations
+# 3. KDE Plasma & Xsettingsd
 # ------------------------------------------------------------------------------
 safe_sed "s|\(cursorTheme=\).*|\1$CURSOR_THEME|" "$HOME/.config/kcminputrc"
 safe_sed "s|\(cursorTheme=\).*|\1$CURSOR_THEME|" "$HOME/.config/kdedefaults/kcminputrc"
@@ -261,12 +290,13 @@ safe_sed "s|\(widgetStyle=\).*|\1kvantum|" "$HOME/.config/kdeglobals"
 safe_sed "s|\(ColorScheme=\).*|\1$KDE_COLOR|" "$HOME/.config/kdeglobals"
 safe_sed "s|\(Theme=\).*|\1$ICON_THEME|" "$HOME/.config/kdeglobals"
 safe_sed "s|\(name=\).*|\1$GTK_THEME|" "$HOME/.config/kdedefaults/plasmarc"
-safe_sed "s|\(Net/ThemeName \"\)[^\"]*|\1$GTK_THEME|" "$HOME/.config/xsettingsd/xsettingsd.conf"
-safe_sed "s|\(Gtk/CursorThemeName \"\)[^\"]*|\1$CURSOR_THEME|" "$HOME/.config/xsettingsd/xsettingsd.conf"
-safe_sed "s|\(Net/IconThemeName \"\)[^\"]*|\1$ICON_THEME|" "$HOME/.config/xsettingsd/xsettingsd.conf"
+
+safe_sed "s|\(Net/ThemeName \"\)[^\"]*|\1$GTK_THEME\"|" "$HOME/.config/xsettingsd/xsettingsd.conf"
+safe_sed "s|\(Gtk/CursorThemeName \"\)[^\"]*|\1$CURSOR_THEME\"|" "$HOME/.config/xsettingsd/xsettingsd.conf"
+safe_sed "s|\(Net/IconThemeName \"\)[^\"]*|\1$ICON_THEME\"|" "$HOME/.config/xsettingsd/xsettingsd.conf"
 
 # ------------------------------------------------------------------------------
-# 4. Papirus Folder Icons (Matching Theme)
+# 4. Papirus Folder Icons
 # ------------------------------------------------------------------------------
 if command -v papirus-folders >/dev/null 2>&1; then
     echo "  [icons] Setting Papirus folder color to: $PAPIRUS_FOLDER_COLOR..."
@@ -274,7 +304,7 @@ if command -v papirus-folders >/dev/null 2>&1; then
 fi
 
 # ------------------------------------------------------------------------------
-# 5. GNOME / Live GTK settings via gsettings
+# 5. GNOME Desktop Interface via gsettings
 # ------------------------------------------------------------------------------
 if command -v gsettings >/dev/null 2>&1; then
     gsettings set org.gnome.desktop.interface gtk-theme "$GTK_THEME" 2>/dev/null || true
@@ -286,24 +316,39 @@ if command -v gsettings >/dev/null 2>&1; then
 fi
 
 # ------------------------------------------------------------------------------
-# 6. Live Window Manager & Bar Reloads
+# 6. Live WMs & Desktop Shell Reloads
 # ------------------------------------------------------------------------------
+# Hyprland
 if command -v hyprctl >/dev/null 2>&1; then
     hyprctl setcursor "$CURSOR_THEME" 24 2>/dev/null || true
     hyprctl reload 2>/dev/null || true
 fi
 
+# Sway
 if command -v swaymsg >/dev/null 2>&1; then
     swaymsg reload 2>/dev/null || true
 fi
 
-# Signal Waybar to reload styles
+# i3
+if command -v i3-msg >/dev/null 2>&1; then
+    i3-msg reload 2>/dev/null || true
+fi
+
+# BSPWM border color live update
+if command -v bspc >/dev/null 2>&1; then
+    bspc config focused_border_color "$BSPWM_BORDER" 2>/dev/null || true
+fi
+
+# Waybar reload
 pkill -USR2 waybar 2>/dev/null || true
 
-# Signal SwayNC to reload styles
+# SwayNC reload
 if command -v swaync-client >/dev/null 2>&1; then
     swaync-client -R 2>/dev/null || true
     swaync-client -rs 2>/dev/null || true
 fi
+
+# xsettingsd live reload (signals GTK apps on X11 / XWayland)
+killall -HUP xsettingsd 2>/dev/null || pkill -HUP xsettingsd 2>/dev/null || true
 
 echo "==> Successfully switched to $DISPLAY_NAME!"

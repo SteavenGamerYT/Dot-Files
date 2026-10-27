@@ -1,8 +1,26 @@
-/* Adwaita Dark / Fluent Theme for GTK 4 */
+/* ==============================================================================
+ * Adwaita Dark / Fluent Theme for GTK 4 / Libadwaita
+ * ============================================================================== */
 
 @define-color accent_color #3584e4;
 @define-color accent_bg_color #3584e4;
 @define-color accent_fg_color #ffffff;
+
+@define-color destructive_color #e01b24;
+@define-color destructive_bg_color #e01b24;
+@define-color destructive_fg_color #ffffff;
+
+@define-color success_color #2ec27e;
+@define-color success_bg_color #2ec27e;
+@define-color success_fg_color #ffffff;
+
+@define-color warning_color #e5a50a;
+@define-color warning_bg_color #e5a50a;
+@define-color warning_fg_color #000000;
+
+@define-color error_color #e01b24;
+@define-color error_bg_color #e01b24;
+@define-color error_fg_color #ffffff;
 
 @define-color window_bg_color #242424;
 @define-color window_fg_color #ffffff;
@@ -32,3 +50,110 @@
 @define-color theme_selected_fg_color #ffffff;
 @define-color borders #383838;
 @define-color unfocused_borders #2d2d2d;
+
+:root {
+    --accent-color: #3584e4;
+    --accent-bg-color: #3584e4;
+    --accent-fg-color: #ffffff;
+    --window-bg-color: #242424;
+    --window-fg-color: #ffffff;
+    --view-bg-color: #1e1e1e;
+    --view-fg-color: #ffffff;
+    --headerbar-bg-color: #303030;
+    --headerbar-fg-color: #ffffff;
+    --card-bg-color: #303030;
+    --card-fg-color: #ffffff;
+    --popover-bg-color: #303030;
+    --popover-fg-color: #ffffff;
+    --dialog-bg-color: #242424;
+    --dialog-fg-color: #ffffff;
+}
+
+window.background {
+    background-color: @window_bg_color;
+    color: @window_fg_color;
+}
+
+headerbar {
+    background-color: @headerbar_bg_color;
+    color: @headerbar_fg_color;
+    border-color: @headerbar_border_color;
+}
+
+/* ==============================================================================
+ * List / Sidebar Selection (Flatseal, Nautilus, Settings, etc.)
+ * ============================================================================== */
+.navigation-sidebar row:selected,
+.navigation-sidebar row:selected:hover,
+.navigation-sidebar row:selected:focus,
+.navigation-sidebar row:selected:active,
+.navigation-sidebar row.activatable:selected,
+.navigation-sidebar row.activatable:selected:hover,
+.navigation-sidebar row.activatable:selected:active,
+.navigation-sidebar row.activatable:selected.has-open-popup,
+.navigation-sidebar>row:selected,
+.navigation-sidebar>row:selected:hover,
+.navigation-sidebar>row:selected:focus,
+.navigation-sidebar>row.activatable:selected,
+.navigation-sidebar>row.activatable:selected:hover,
+list.navigation-sidebar>row:selected,
+list.navigation-sidebar>row:selected:hover,
+list.navigation-sidebar>row:selected:focus,
+list.navigation-sidebar>row.activatable:selected,
+list.navigation-sidebar>row.activatable:selected:hover,
+list.navigation-sidebar row:selected,
+list.navigation-sidebar row:selected:hover,
+list.navigation-sidebar row:selected:active,
+list.navigation-sidebar row.activatable:selected,
+list.navigation-sidebar row.activatable:selected:hover,
+listview.navigation-sidebar>row:selected,
+listview.navigation-sidebar>row:selected:focus,
+listview.navigation-sidebar>row:selected:hover,
+row:selected,
+row:selected:focus,
+row:selected:hover,
+row:selected:active,
+row.activatable:selected,
+row.activatable:selected:hover,
+row.activatable:selected:active,
+listview>row:selected,
+listview>row:selected:focus,
+listview>row:selected:hover,
+list>row:selected,
+list>row:selected:focus,
+list>row:selected:hover {
+    background-color: #3584e4 !important;
+    color: #ffffff !important;
+    outline: none !important;
+}
+
+.navigation-sidebar row:selected label,
+.navigation-sidebar row:selected .title,
+.navigation-sidebar row:selected .subtitle,
+.navigation-sidebar row:selected image,
+.navigation-sidebar row.activatable:selected label,
+.navigation-sidebar row.activatable:selected .title,
+.navigation-sidebar row.activatable:selected .subtitle,
+.navigation-sidebar row.activatable:selected image,
+.navigation-sidebar>row:selected label,
+.navigation-sidebar>row:selected .title,
+.navigation-sidebar>row:selected .subtitle,
+.navigation-sidebar>row:selected image,
+list.navigation-sidebar>row:selected label,
+list.navigation-sidebar>row:selected .title,
+list.navigation-sidebar>row:selected .subtitle,
+list.navigation-sidebar>row:selected image,
+row:selected label,
+row:selected .title,
+row:selected .subtitle,
+row:selected image,
+listview>row:selected label,
+listview>row:selected .title,
+listview>row:selected .subtitle,
+listview>row:selected image,
+list>row:selected label,
+list>row:selected .title,
+list>row:selected .subtitle,
+list>row:selected image {
+    color: #ffffff !important;
+}

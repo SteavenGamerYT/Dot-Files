@@ -7,10 +7,10 @@ WALLPAPER="$(grep '^WALLPAPER_PATH=' ~/.config/sway/wallpaper.conf | cut -d'=' -
 swaylock --daemonize -f \
   -i "$WALLPAPER" \
   --effect-blur 7x5 \
-  --line-color 5A3F42 \
-  --ring-color 5A3F42 \
-  --text-color F5F5F5 \
-  --key-hl-color C06C84 \
+  --line-color 4C566A \
+  --ring-color 4C566A \
+  --text-color ECEFF4 \
+  --key-hl-color A3BE8C \
   --indicator-radius 50 \
   --grace 2 \
   --fade-in 0.2

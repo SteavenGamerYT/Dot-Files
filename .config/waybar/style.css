@@ -1,17 +1,15 @@
-@define-color background #402e30;       /* Nordic red-style background */
-@define-color foreground #f5f5f5;       /* Soft white for readability */
-@define-color foreground-alt #ffffff;   /* Pure white alternative */
-@define-color alpha #402e30;            /* Transparent red-tinted background */
-@define-color shade1 #6a3c40;
-@define-color shade2 #5a3f42;
-@define-color shade3 #5a3f42;
-@define-color shade4 #5a3f42;
-@define-color shade5 #5a3f42;
-@define-color shade6 #5a3f42;
-@define-color shade7 #5a3f42;
-@define-color shade8 #5a3f42;
-@define-color nvidia #a3be8c;
-@define-color amd #bf616a;
+@define-color background #333333;
+@define-color foreground #F5F5F5;
+@define-color foreground-alt #FFFFFF;
+@define-color alpha #39444f;
+@define-color shade1 #434c5e;
+@define-color shade2 #4C566A;
+@define-color shade3 #4C566A;
+@define-color shade4 #4C566A;
+@define-color shade5 #4C566A;
+@define-color shade6 #4C566A;
+@define-color shade7 #4C566A;
+@define-color shade8 #4C566A;
 
 * {
     border-radius: 0;
@@ -23,7 +21,7 @@
 
 window#waybar {
     background: rgba(21, 18, 27, 0);
-    color: @foreground;
+    color: #cdd6f4;
     background-color: @alpha;
     transition-property: background-color;
 }
@@ -94,14 +92,6 @@ tooltip {
     padding-right: 12px;
     background: @shade2;
     color: @foreground;
-}
-
-#custom-vmgpuusage {
-    padding: 2px;
-    padding-left: 12px;
-    padding-right: 12px;
-    background: @shade2;
-    color: @nvidia;
 }
 
 #custom-vramusage {
@@ -203,7 +193,7 @@ tooltip {
 
 #custom-updates {
     background-color: @background;
-    color: @foreground;
+    color: @shade4;
     padding: 2px;
     padding-left: 12px;
     padding-right: 12px;
@@ -227,7 +217,7 @@ tooltip {
 
 #custom-notification {
     background-color: @background;
-    color: @foreground;
+    color: @shade4;
     padding: 2px;
     padding-left: 12px;
     padding-right: 12px;
@@ -235,14 +225,14 @@ tooltip {
 
 #custom-settings {
     background-color: @background;
-    color: @foreground;
+    color: @shade4;
     padding: 2px;
     padding-left: 12px;
     padding-right: 12px;
 }
 
 #custom-caffeine {
-    color: @foreground;
+    color: #89dceb;
     padding: 2px;
     padding-left: 12px;
     padding-right: 12px;
@@ -250,7 +240,7 @@ tooltip {
 
 #custom-weather {
     background-color: @background;
-    color: @foreground;
+    color: @shade4;
     padding: 2px;
     padding-left: 12px;
     padding-right: 12px;

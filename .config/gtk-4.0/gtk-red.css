@@ -1,16 +1,18 @@
-/* Nordic Red / Mint-Y-Dark-Red Theme for GTK 4 */
+/* ==============================================================================
+ * Nordic Red / Mint-Y-Dark-Red Theme for GTK 4 / Libadwaita
+ * ============================================================================== */
 
 @define-color accent_color #bf616a;
 @define-color accent_bg_color #bf616a;
 @define-color accent_fg_color #ffffff;
 
-@define-color destructive_color #e82127;
-@define-color destructive_bg_color #e82127;
+@define-color destructive_color #e06c75;
+@define-color destructive_bg_color #e06c75;
 @define-color destructive_fg_color #ffffff;
 
 @define-color success_color #a3be8c;
 @define-color success_bg_color #a3be8c;
-@define-color success_fg_color #2e3440;
+@define-color success_fg_color #ffffff;
 
 @define-color warning_color #ebcb8b;
 @define-color warning_bg_color #ebcb8b;
@@ -20,34 +22,52 @@
 @define-color error_bg_color #bf616a;
 @define-color error_fg_color #ffffff;
 
-@define-color window_bg_color #402e30;
+@define-color window_bg_color #2b2022;
 @define-color window_fg_color #f5f5f5;
 
-@define-color view_bg_color #2e1e1f;
+@define-color view_bg_color #23191a;
 @define-color view_fg_color #f5f5f5;
 
-@define-color headerbar_bg_color #5a3f42;
+@define-color headerbar_bg_color #352628;
 @define-color headerbar_fg_color #f5f5f5;
-@define-color headerbar_border_color #6a3c40;
-@define-color headerbar_backdrop_color #402e30;
+@define-color headerbar_border_color #402e30;
+@define-color headerbar_backdrop_color #2b2022;
 
-@define-color card_bg_color #5a3f42;
+@define-color card_bg_color #352628;
 @define-color card_fg_color #f5f5f5;
 
-@define-color popover_bg_color #5a3f42;
+@define-color popover_bg_color #352628;
 @define-color popover_fg_color #f5f5f5;
 
-@define-color dialog_bg_color #402e30;
+@define-color dialog_bg_color #2b2022;
 @define-color dialog_fg_color #f5f5f5;
 
-@define-color theme_bg_color #402e30;
+@define-color theme_bg_color #2b2022;
 @define-color theme_fg_color #f5f5f5;
-@define-color theme_base_color #2e1e1f;
+@define-color theme_base_color #23191a;
 @define-color theme_text_color #f5f5f5;
 @define-color theme_selected_bg_color #bf616a;
 @define-color theme_selected_fg_color #ffffff;
-@define-color borders #5a3f42;
-@define-color unfocused_borders #402e30;
+@define-color borders #4a3437;
+@define-color unfocused_borders #3a282b;
+
+:root {
+    --accent-color: #bf616a;
+    --accent-bg-color: #bf616a;
+    --accent-fg-color: #ffffff;
+    --window-bg-color: #2b2022;
+    --window-fg-color: #f5f5f5;
+    --view-bg-color: #23191a;
+    --view-fg-color: #f5f5f5;
+    --headerbar-bg-color: #352628;
+    --headerbar-fg-color: #f5f5f5;
+    --card-bg-color: #352628;
+    --card-fg-color: #f5f5f5;
+    --popover-bg-color: #352628;
+    --popover-fg-color: #f5f5f5;
+    --dialog-bg-color: #2b2022;
+    --dialog-fg-color: #f5f5f5;
+}
 
 window.background {
     background-color: @window_bg_color;
@@ -58,4 +78,82 @@ headerbar {
     background-color: @headerbar_bg_color;
     color: @headerbar_fg_color;
     border-color: @headerbar_border_color;
+}
+
+/* ==============================================================================
+ * List / Sidebar Selection (Flatseal, Nautilus, Settings, etc.)
+ * ============================================================================== */
+.navigation-sidebar row:selected,
+.navigation-sidebar row:selected:hover,
+.navigation-sidebar row:selected:focus,
+.navigation-sidebar row:selected:active,
+.navigation-sidebar row.activatable:selected,
+.navigation-sidebar row.activatable:selected:hover,
+.navigation-sidebar row.activatable:selected:active,
+.navigation-sidebar row.activatable:selected.has-open-popup,
+.navigation-sidebar>row:selected,
+.navigation-sidebar>row:selected:hover,
+.navigation-sidebar>row:selected:focus,
+.navigation-sidebar>row.activatable:selected,
+.navigation-sidebar>row.activatable:selected:hover,
+list.navigation-sidebar>row:selected,
+list.navigation-sidebar>row:selected:hover,
+list.navigation-sidebar>row:selected:focus,
+list.navigation-sidebar>row.activatable:selected,
+list.navigation-sidebar>row.activatable:selected:hover,
+list.navigation-sidebar row:selected,
+list.navigation-sidebar row:selected:hover,
+list.navigation-sidebar row:selected:active,
+list.navigation-sidebar row.activatable:selected,
+list.navigation-sidebar row.activatable:selected:hover,
+listview.navigation-sidebar>row:selected,
+listview.navigation-sidebar>row:selected:focus,
+listview.navigation-sidebar>row:selected:hover,
+row:selected,
+row:selected:focus,
+row:selected:hover,
+row:selected:active,
+row.activatable:selected,
+row.activatable:selected:hover,
+row.activatable:selected:active,
+listview>row:selected,
+listview>row:selected:focus,
+listview>row:selected:hover,
+list>row:selected,
+list>row:selected:focus,
+list>row:selected:hover {
+    background-color: #bf616a !important;
+    color: #ffffff !important;
+    outline: none !important;
+}
+
+.navigation-sidebar row:selected label,
+.navigation-sidebar row:selected .title,
+.navigation-sidebar row:selected .subtitle,
+.navigation-sidebar row:selected image,
+.navigation-sidebar row.activatable:selected label,
+.navigation-sidebar row.activatable:selected .title,
+.navigation-sidebar row.activatable:selected .subtitle,
+.navigation-sidebar row.activatable:selected image,
+.navigation-sidebar>row:selected label,
+.navigation-sidebar>row:selected .title,
+.navigation-sidebar>row:selected .subtitle,
+.navigation-sidebar>row:selected image,
+list.navigation-sidebar>row:selected label,
+list.navigation-sidebar>row:selected .title,
+list.navigation-sidebar>row:selected .subtitle,
+list.navigation-sidebar>row:selected image,
+row:selected label,
+row:selected .title,
+row:selected .subtitle,
+row:selected image,
+listview>row:selected label,
+listview>row:selected .title,
+listview>row:selected .subtitle,
+listview>row:selected image,
+list>row:selected label,
+list>row:selected .title,
+list>row:selected .subtitle,
+list>row:selected image {
+    color: #ffffff !important;
 }
