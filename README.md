@@ -104,19 +104,26 @@ hyprctl setcursor WhiteSur-cursors 24
 
 ## Theme Switching
 
-Easily switch themes across GTK, Qt/Kvantum, Waybar, SwayNC, Rofi, Kitty, Hyprland, and Sway:
+Easily switch themes across GTK (2/3/4), Qt/Kvantum, Waybar, SwayNC, Rofi, Kitty, Alacritty, Starship, Papirus folder icons, Hyprland, Sway, and i3:
 
 ```bash
-# Apply Nordic theme
+# Apply Pure Nordic (Frost cyan/blue, Nordic GTK/Kvantum, Nordic folders)
 ./scripts/theme-switcher.sh nordic
-# Or use the shortcut:
+# Or shortcut:
 ./theme.sh
 
-# Apply Fluent Dark theme
+# Apply Nordic Red / Adwaita Red (Burgundy accents, Mint-Y-Dark-Red, red folders)
+./scripts/theme-switcher.sh red
+# Or shortcut:
+./theme3.sh
+
+# Apply Fluent Dark (Adwaita Dark, Fluent-Dark, Adwaita folders)
 ./scripts/theme-switcher.sh fluent
-# Or use the shortcut:
+# Or shortcut:
 ./theme2.sh
 ```
+
+Running `./scripts/theme-switcher.sh` without arguments launches an interactive selection menu (supports both terminal and Rofi).
 
 ---
 
@@ -127,3 +134,4 @@ Pull updates and refresh links:
 ```bash
 ./update.sh
 ```
+

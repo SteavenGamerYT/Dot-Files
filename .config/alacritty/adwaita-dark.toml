@@ -1,0 +1,29 @@
+# Colors (Adwaita Dark / Fluent)
+
+[colors.primary]
+background = '#242424'
+foreground = '#FFFFFF'
+
+[colors.normal]
+black = '#1E1E1E'
+red = '#ED333B'
+green = '#57E389'
+yellow = '#F8E45C'
+blue = '#3584E4'
+magenta = '#C061CB'
+cyan = '#2EC27E'
+white = '#DEDDDA'
+
+[colors.bright]
+black = '#5E5C64'
+red = '#F66151'
+green = '#8FF0A4'
+yellow = '#F9F06B'
+blue = '#62A0EA'
+magenta = '#DC8ADD'
+cyan = '#5BC8AF'
+white = '#FFFFFF'
+
+[colors.selection]
+text = '#FFFFFF'
+background = '#3584E4'

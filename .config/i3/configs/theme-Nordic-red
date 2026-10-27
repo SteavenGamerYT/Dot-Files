@@ -1,0 +1,46 @@
+font pango:Roboto Regular 12
+
+exec_always --no-startup-id gsettings set org.gnome.desktop.interface gtk-theme 'Mint-Y-Dark-Red'
+exec_always --no-startup-id gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
+exec_always --no-startup-id gsettings set org.gnome.desktop.interface cursor-theme 'WhiteSur-cursors'
+exec_always --no-startup-id gsettings set org.gnome.desktop.interface cursor-size 24
+exec_always --no-startup-id gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+exec_always --no-startup-id gsettings set org.gnome.desktop.interface font-name 'Roboto Regular 12'
+exec_always --no-startup-id xsetroot -cursor_name WhiteSur-cursors
+exec_always --no-startup-id xsetroot -cursor_size 24
+
+# Color scheme (Nordic Red)
+set $rosewater #f2c0c0
+set $flamingo  #e5a8a8
+set $pink      #e79ba8
+set $mauve     #d48ea6
+set $red       #bf616a
+set $maroon    #a8515c
+set $peach     #e49b7a
+set $yellow    #e0b989
+set $green     #a26a5a
+set $teal      #9d6d75
+set $sky       #b16b77
+set $sapphire  #944a5c
+set $blue      #5a3f42
+set $lavender  #f5f5f5
+set $text      #f5f5f5
+set $subtext1  #e0d4d4
+set $subtext0  #d1bebe
+set $overlay2  #bb9c9c
+set $overlay1  #a98888
+set $overlay0  #8f6f6f
+set $surface2  #7a5c5f
+set $surface1  #6e4b4f
+set $surface0  #5a3f42
+set $base      #402e30
+set $mantle    #2e1f21
+set $crust     #1c1416
+
+# class                 border  bground text    indicator child_border
+client.focused           $red $base $text  $rosewater $red
+client.focused_inactive  $overlay0 $base $text  $rosewater $overlay0
+client.unfocused         $overlay0 $base $text  $rosewater $overlay0
+client.urgent            $peach    $base $peach $overlay0  $peach
+client.placeholder       $overlay0 $base $text  $overlay0  $overlay0
+client.background        $base

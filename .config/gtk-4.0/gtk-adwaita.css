@@ -1,0 +1,34 @@
+/* Adwaita Dark / Fluent Theme for GTK 4 */
+
+@define-color accent_color #3584e4;
+@define-color accent_bg_color #3584e4;
+@define-color accent_fg_color #ffffff;
+
+@define-color window_bg_color #242424;
+@define-color window_fg_color #ffffff;
+
+@define-color view_bg_color #1e1e1e;
+@define-color view_fg_color #ffffff;
+
+@define-color headerbar_bg_color #303030;
+@define-color headerbar_fg_color #ffffff;
+@define-color headerbar_border_color #383838;
+@define-color headerbar_backdrop_color #242424;
+
+@define-color card_bg_color #303030;
+@define-color card_fg_color #ffffff;
+
+@define-color popover_bg_color #303030;
+@define-color popover_fg_color #ffffff;
+
+@define-color dialog_bg_color #242424;
+@define-color dialog_fg_color #ffffff;
+
+@define-color theme_bg_color #242424;
+@define-color theme_fg_color #ffffff;
+@define-color theme_base_color #1e1e1e;
+@define-color theme_text_color #ffffff;
+@define-color theme_selected_bg_color #3584e4;
+@define-color theme_selected_fg_color #ffffff;
+@define-color borders #383838;
+@define-color unfocused_borders #2d2d2d;
