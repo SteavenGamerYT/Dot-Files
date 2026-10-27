@@ -138,12 +138,12 @@ if [ -r /etc/os-release ]; then
         )
 
         if [ "$DRY_RUN" = true ]; then
-            yellow "  [would update] paru -Syu"
+            yellow "  [would update] paru -Syu --needed --noconfirm"
             yellow "  [would install] ${STEAVEN_PACKAGES[*]}"
         else
             blue "==> Updating package database and installing SteavenLinux packages..."
 
-            paru -Syu --noconfirm "${STEAVEN_PACKAGES[@]}"
+            paru -Syu --needed --noconfirm "${STEAVEN_PACKAGES[@]}"
         fi
     fi
 fi
