@@ -18,7 +18,41 @@ fi
 
 # 3. Flatpak updates (system & user)
 if command -v flatpak >/dev/null 2>&1; then
-    flatpak_updates=$( (flatpak remote-ls --cached --updates --columns=name,version 2>/dev/null; flatpak remote-ls --user --cached --updates --columns=name,version 2>/dev/null) | sed '/^\s*$/d' )
+    get_flatpak_updates() {
+        local scope_flag="$1"
+        local origins
+        origins=$(flatpak list $scope_flag --columns=origin 2>/dev/null | sort -u)
+        [ -z "$origins" ] && return
+
+        local remotes
+        remotes=$(flatpak remotes $scope_flag --columns=name,options 2>/dev/null | awk '$2 !~ /no-enumerate/ {print $1}')
+        [ -z "$remotes" ] && return
+
+        local target_remotes=()
+        for r in $remotes; do
+            if echo "$origins" | grep -qx "$r"; then
+                target_remotes+=("$r")
+            fi
+        done
+
+        if [ ${#target_remotes[@]} -eq 0 ]; then
+            while IFS= read -r r; do
+                [ -n "$r" ] && target_remotes+=("$r")
+            done <<< "$remotes"
+        fi
+
+        for r in "${target_remotes[@]}"; do
+            [ -z "$r" ] && continue
+            local out
+            out=$(timeout 5 flatpak remote-ls $scope_flag --updates --columns=name,version "$r" 2>/dev/null)
+            if [ $? -ne 0 ]; then
+                out=$(flatpak remote-ls $scope_flag --cached --updates --columns=name,version "$r" 2>/dev/null)
+            fi
+            [ -n "$out" ] && echo "$out"
+        done
+    }
+
+    flatpak_updates=$( (get_flatpak_updates ""; get_flatpak_updates "--user") | sed -E 's/\t[[:space:]]*/ /; s/[[:space:]]+$//; /^\s*$/d' | sort -u )
 fi
 
 # Counts
