@@ -2,11 +2,11 @@ font pango:Roboto Regular 12
 
 exec_always --no-startup-id gsettings set org.gnome.desktop.interface gtk-theme 'Nordic'
 exec_always --no-startup-id gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
-exec_always --no-startup-id gsettings set org.gnome.desktop.interface cursor-theme 'WhiteSur-cursors'
+exec_always --no-startup-id gsettings set org.gnome.desktop.interface cursor-theme 'Nordzy-cursors'
 exec_always --no-startup-id gsettings set org.gnome.desktop.interface cursor-size 24
 exec_always --no-startup-id gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 exec_always --no-startup-id gsettings set org.gnome.desktop.interface font-name 'Roboto Regular 12'
-exec_always --no-startup-id xsetroot -cursor_name WhiteSur-cursors
+exec_always --no-startup-id xsetroot -cursor_name Nordzy-cursors
 exec_always --no-startup-id xsetroot -cursor_size 24
 
 # Color scheme (Nordic Palette)

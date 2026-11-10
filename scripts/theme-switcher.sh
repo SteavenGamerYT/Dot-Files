@@ -243,7 +243,11 @@ for env_file in "$DOTFILES_DIR/.config/environment.d/10-user.conf" "$HOME/.confi
 done
 
 if command -v systemctl >/dev/null 2>&1; then
-    systemctl --user import-environment GTK_THEME ICON_THEME QT_QPA_ICONTHEME CURSOR_THEME XCURSOR_THEME KVANTUM_THEME KDE_COLOR_SCHEME 2>/dev/null || true
+    systemctl --user import-environment GTK_THEME ICON_THEME QT_QPA_ICONTHEME CURSOR_THEME XCURSOR_THEME XCURSOR_SIZE KVANTUM_THEME KDE_COLOR_SCHEME 2>/dev/null || true
+fi
+
+if command -v dbus-update-activation-environment >/dev/null 2>&1; then
+    dbus-update-activation-environment --systemd GTK_THEME ICON_THEME QT_QPA_ICONTHEME CURSOR_THEME XCURSOR_THEME XCURSOR_SIZE KVANTUM_THEME KDE_COLOR_SCHEME 2>/dev/null || true
 fi
 
 # ------------------------------------------------------------------------------
@@ -473,9 +477,9 @@ else
     done
 fi
 
-safe_sed "s|\(Net/ThemeName \"\)[^\"]*|\1$GTK_THEME\"|" "$HOME/.config/xsettingsd/xsettingsd.conf" 2>/dev/null || true
-safe_sed "s|\(Gtk/CursorThemeName \"\)[^\"]*|\1$CURSOR_THEME\"|" "$HOME/.config/xsettingsd/xsettingsd.conf" 2>/dev/null || true
-safe_sed "s|\(Net/IconThemeName \"\)[^\"]*|\1$ICON_THEME\"|" "$HOME/.config/xsettingsd/xsettingsd.conf" 2>/dev/null || true
+safe_sed "s|^[[:space:]]*Net/ThemeName[[:space:]].*|Net/ThemeName \"$GTK_THEME\"|" "$HOME/.config/xsettingsd/xsettingsd.conf" 2>/dev/null || true
+safe_sed "s|^[[:space:]]*Gtk/CursorThemeName[[:space:]].*|Gtk/CursorThemeName \"$CURSOR_THEME\"|" "$HOME/.config/xsettingsd/xsettingsd.conf" 2>/dev/null || true
+safe_sed "s|^[[:space:]]*Net/IconThemeName[[:space:]].*|Net/IconThemeName \"$ICON_THEME\"|" "$HOME/.config/xsettingsd/xsettingsd.conf" 2>/dev/null || true
 
 # Apply KDE desktop theme live (keeps panels and app launcher dark)
 if command -v plasma-apply-desktoptheme >/dev/null 2>&1; then
@@ -537,6 +541,23 @@ if command -v gsettings >/dev/null 2>&1; then
 fi
 
 # ------------------------------------------------------------------------------
+# 5b. Default Cursor Theme & X11 / XWayland Root Resources
+# ------------------------------------------------------------------------------
+for icondir in "$HOME/.icons/default" "$HOME/.local/share/icons/default" "$DOTFILES_DIR/.icons/default"; do
+    mkdir -p "$icondir" 2>/dev/null || true
+    cat <<EOF > "$icondir/index.theme"
+[Icon Theme]
+Name=Default
+Comment=Default Cursor Theme
+Inherits=$CURSOR_THEME
+EOF
+done
+
+if command -v xrdb >/dev/null 2>&1 && [ -n "${DISPLAY:-}" ]; then
+    printf "Xcursor.theme: %s\nXcursor.size: 24\n" "$CURSOR_THEME" | xrdb -merge 2>/dev/null || true
+fi
+
+# ------------------------------------------------------------------------------
 # 6. Live WMs & Desktop Shell Reloads
 # ------------------------------------------------------------------------------
 # Hyprland
@@ -547,7 +568,14 @@ fi
 
 # Sway
 if command -v swaymsg >/dev/null 2>&1; then
+    swaymsg seat \* xcursor_theme "$CURSOR_THEME" 24 2>/dev/null || true
+    swaymsg seat seat0 xcursor_theme "$CURSOR_THEME" 24 2>/dev/null || true
     swaymsg reload 2>/dev/null || true
+    # Re-apply gsettings after sway reload in case sway's exec_always raced
+    if command -v gsettings >/dev/null 2>&1; then
+        gsettings set org.gnome.desktop.interface cursor-theme "$CURSOR_THEME" 2>/dev/null || true
+        gsettings set org.gnome.desktop.interface cursor-size 24 2>/dev/null || true
+    fi
 fi
 
 # i3
