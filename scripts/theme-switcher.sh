@@ -185,6 +185,13 @@ case "$THEME" in
         ;;
 esac
 
+export CURSOR_THEME="$CURSOR_THEME"
+export XCURSOR_THEME="$CURSOR_THEME"
+export CURSOR_SIZE="24"
+export XCURSOR_SIZE="24"
+export GTK_THEME="$GTK_THEME"
+export ICON_THEME="$ICON_THEME"
+
 echo "==> Applying theme: $DISPLAY_NAME..."
 
 safe_sed() {
@@ -243,11 +250,30 @@ for env_file in "$DOTFILES_DIR/.config/environment.d/10-user.conf" "$HOME/.confi
 done
 
 if command -v systemctl >/dev/null 2>&1; then
-    systemctl --user import-environment GTK_THEME ICON_THEME QT_QPA_ICONTHEME CURSOR_THEME XCURSOR_THEME XCURSOR_SIZE KVANTUM_THEME KDE_COLOR_SCHEME 2>/dev/null || true
+    systemctl --user set-environment \
+        GTK_THEME="$GTK_THEME" \
+        ICON_THEME="$ICON_THEME" \
+        QT_QPA_ICONTHEME="$ICON_THEME" \
+        CURSOR_THEME="$CURSOR_THEME" \
+        XCURSOR_THEME="$CURSOR_THEME" \
+        XCURSOR_SIZE="24" \
+        CURSOR_SIZE="24" \
+        KVANTUM_THEME="$KVANTUM_THEME" \
+        KDE_COLOR_SCHEME="$KDE_COLOR" 2>/dev/null || true
+    systemctl --user import-environment GTK_THEME ICON_THEME QT_QPA_ICONTHEME CURSOR_THEME XCURSOR_THEME XCURSOR_SIZE CURSOR_SIZE KVANTUM_THEME KDE_COLOR_SCHEME 2>/dev/null || true
 fi
 
 if command -v dbus-update-activation-environment >/dev/null 2>&1; then
-    dbus-update-activation-environment --systemd GTK_THEME ICON_THEME QT_QPA_ICONTHEME CURSOR_THEME XCURSOR_THEME XCURSOR_SIZE KVANTUM_THEME KDE_COLOR_SCHEME 2>/dev/null || true
+    dbus-update-activation-environment --systemd \
+        GTK_THEME="$GTK_THEME" \
+        ICON_THEME="$ICON_THEME" \
+        QT_QPA_ICONTHEME="$ICON_THEME" \
+        CURSOR_THEME="$CURSOR_THEME" \
+        XCURSOR_THEME="$CURSOR_THEME" \
+        XCURSOR_SIZE="24" \
+        CURSOR_SIZE="24" \
+        KVANTUM_THEME="$KVANTUM_THEME" \
+        KDE_COLOR_SCHEME="$KDE_COLOR" 2>/dev/null || true
 fi
 
 # ------------------------------------------------------------------------------
@@ -323,9 +349,29 @@ EOF
 
     # Sway (Match 'include ...sway/configs/theme-*' with or without '=')
     safe_sed "s|^include[[:space:]=]*.*sway/configs/theme-[^[:space:]]*|include ~/.config/sway/configs/$SWAY_THEME|" "$prefix/sway/config"
+    if [ -f "$prefix/sway/configs/$SWAY_THEME" ]; then
+        safe_sed "s|cursor-theme[[:space:]]*'[^']*'|cursor-theme '$CURSOR_THEME'|" "$prefix/sway/configs/$SWAY_THEME"
+        safe_sed "s|seat[[:space:]]*seat0[[:space:]]*xcursor_theme[[:space:]]*[^[:space:]]*|seat seat0 xcursor_theme $CURSOR_THEME|" "$prefix/sway/configs/$SWAY_THEME"
+    fi
 
     # i3 (Match 'include = ...i3/configs/theme-*')
     safe_sed "s|^include[[:space:]=]*.*i3/configs/theme-[^[:space:]]*|include = ~/.config/i3/configs/$I3_THEME|" "$prefix/i3/config"
+    if [ -f "$prefix/i3/configs/$I3_THEME" ]; then
+        safe_sed "s|cursor-theme[[:space:]]*'[^']*'|cursor-theme '$CURSOR_THEME'|" "$prefix/i3/configs/$I3_THEME"
+        safe_sed "s|xsetroot[[:space:]]*-cursor_name[[:space:]]*[^[:space:]]*|xsetroot -cursor_name $CURSOR_THEME|" "$prefix/i3/configs/$I3_THEME"
+    fi
+
+    # GLib keyfile settings persistence
+    if [ -f "$prefix/glib-2.0/settings/keyfile" ]; then
+        safe_sed "s|^cursor-theme=.*|cursor-theme='$CURSOR_THEME'|" "$prefix/glib-2.0/settings/keyfile"
+        safe_sed "s|^gtk-theme=.*|gtk-theme='$GTK_THEME'|" "$prefix/glib-2.0/settings/keyfile"
+        safe_sed "s|^icon-theme=.*|icon-theme='$ICON_THEME'|" "$prefix/glib-2.0/settings/keyfile"
+    fi
+
+    # Labwc / Budgie environment persistence
+    if [ -f "$prefix/budgie-desktop/labwc/environment" ]; then
+        safe_sed "s|^XCURSOR_THEME=.*|XCURSOR_THEME=$CURSOR_THEME|" "$prefix/budgie-desktop/labwc/environment"
+    fi
 
     # BSPWM startup persistence
     safe_sed "s|\(gsettings set org.gnome.desktop.interface gtk-theme '\)[^']*|\1$GTK_THEME|" "$prefix/bspwm/bspwmrc"
@@ -538,6 +584,11 @@ if command -v gsettings >/dev/null 2>&1; then
     gsettings set org.gnome.desktop.interface cursor-size 24 2>/dev/null || true
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' 2>/dev/null || true
     gsettings set org.gnome.desktop.interface font-name 'Roboto Regular 12' 2>/dev/null || true
+fi
+
+if command -v dconf >/dev/null 2>&1; then
+    dconf write /org/gnome/desktop/interface/cursor-theme "'$CURSOR_THEME'" 2>/dev/null || true
+    dconf write /org/cinnamon/desktop/interface/cursor-theme "'$CURSOR_THEME'" 2>/dev/null || true
 fi
 
 # ------------------------------------------------------------------------------

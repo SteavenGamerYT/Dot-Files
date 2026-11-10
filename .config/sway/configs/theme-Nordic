@@ -4,12 +4,12 @@ set $gnome-schema org.gnome.desktop.interface
 exec_always {
     gsettings set $gnome-schema gtk-theme 'Nordic'
     gsettings set $gnome-schema icon-theme 'Papirus-Dark'
-    gsettings set $gnome-schema cursor-theme 'WhiteSur-cursors'
+    gsettings set $gnome-schema cursor-theme 'Nordzy-cursors'
     gsettings set $gnome-schema cursor-size 24
     gsettings set $gnome-schema color-scheme 'prefer-dark'
     gsettings set $gnome-schema font-name 'Roboto Regular 12'
 }
-seat seat0 xcursor_theme WhiteSur-cursors 24
+seat seat0 xcursor_theme Nordzy-cursors 24
 
 # Color scheme (Nordic Palette)
 set $nord0 #2E3440
