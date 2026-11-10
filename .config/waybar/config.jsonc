@@ -19,7 +19,7 @@
 //        "custom/vramusage",
 //        "custom/cpu",
 //        "memory",
-        "backlight",
+//        "backlight",
         "pulseaudio",
         "pulseaudio#microphone",
         "custom/language",
