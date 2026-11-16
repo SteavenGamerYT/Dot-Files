@@ -15,6 +15,8 @@ nohup.out
 .config/hypr/monitors.conf
 .config/hypr/workspaces.conf
 .config/mpv/memo-history.log
+.config/gtk-3.0/assets/
+.config/gtk-4.0/assets/
 .config/gtk-3.0/colors.css
 .config/gtk-4.0/colors.css
 .config/gtk-3.0/settings.ini
@@ -33,6 +35,8 @@ DotFiles/.config/hypr/wallpaper.conf
 DotFiles/.config/hypr/monitors.conf
 DotFiles/.config/hypr/workspaces.conf
 DotFiles/.config/mpv/memo-history.log
+DotFiles/.config/gtk-3.0/assets/
+DotFiles/.config/gtk-4.0/assets/
 DotFiles/.config/gtk-3.0/colors.css
 DotFiles/.config/gtk-4.0/colors.css
 DotFiles/.config/gtk-3.0/settings.ini

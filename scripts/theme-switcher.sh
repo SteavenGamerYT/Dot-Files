@@ -480,6 +480,21 @@ if os.path.exists(cs_path):
     fi
 }
 
+# Clear kdedefaults before updating active user configs so KConfig/kwriteconfig
+# and plasma-apply-* never strip keys from ~/.config/{kdeglobals,kcminputrc,plasmarc}
+# due to matching default values in ~/.config/kdedefaults.
+if [ -n "$KWRITECONFIG" ]; then
+    for kdedef in "$HOME/.config/kdedefaults" "$DOTFILES_DIR/.config/kdedefaults"; do
+        if [ -d "$kdedef" ]; then
+            $KWRITECONFIG --file "$kdedef/kdeglobals" --group General --key ColorScheme "" >/dev/null 2>&1 || true
+            $KWRITECONFIG --file "$kdedef/kdeglobals" --group KDE --key widgetStyle "" >/dev/null 2>&1 || true
+            $KWRITECONFIG --file "$kdedef/kdeglobals" --group Icons --key Theme "" >/dev/null 2>&1 || true
+            $KWRITECONFIG --file "$kdedef/kcminputrc" --group Mouse --key cursorTheme "" >/dev/null 2>&1 || true
+            $KWRITECONFIG --file "$kdedef/plasmarc" --group Theme --key name "" >/dev/null 2>&1 || true
+        fi
+    done
+fi
+
 # Apply Color Scheme first so full palette is refreshed
 apply_kde_colorscheme "$KDE_COLOR"
 
@@ -494,18 +509,6 @@ if [ -n "$KWRITECONFIG" ]; then
 
     # 3. Plasma Desktop Style (panel, taskbar, kickoff menu - MUST be a valid desktop theme, NOT gtk theme)
     $KWRITECONFIG --file plasmarc --group Theme --key name "$PLASMA_DESKTOP_THEME"
-
-    # 4. Sync kdedefaults so session defaults never revert or fallback to Breeze Light
-    for kdedef in "$HOME/.config/kdedefaults" "$DOTFILES_DIR/.config/kdedefaults"; do
-        if [ -d "$kdedef" ]; then
-            $KWRITECONFIG --file "$kdedef/kdeglobals" --group General --key ColorScheme "$KDE_COLOR"
-            $KWRITECONFIG --file "$kdedef/kdeglobals" --group KDE --key widgetStyle "kvantum"
-            $KWRITECONFIG --file "$kdedef/kdeglobals" --group Icons --key Theme "$ICON_THEME"
-            $KWRITECONFIG --file "$kdedef/kcminputrc" --group Mouse --key cursorTheme "$CURSOR_THEME"
-            $KWRITECONFIG --file "$kdedef/plasmarc" --group Theme --key name "$PLASMA_DESKTOP_THEME"
-            echo "org.kde.breezedark.desktop" > "$kdedef/package" 2>/dev/null || true
-        fi
-    done
 else
     # Fallback sed if kwriteconfig is not installed
     for kde_dir in "$HOME/.config" "$DOTFILES_DIR/.config"; do
@@ -537,6 +540,29 @@ fi
 if command -v plasma-apply-cursortheme >/dev/null 2>&1; then
     plasma-apply-cursortheme "$CURSOR_THEME" >/dev/null 2>&1 || \
     QT_QPA_PLATFORM=offscreen plasma-apply-cursortheme "$CURSOR_THEME" >/dev/null 2>&1 || true
+fi
+
+# Re-assert user config keys after plasma-apply-* tools and then sync kdedefaults.
+# IMPORTANT: kdedefaults/package MUST NOT have a trailing newline, because
+# startplasma-wayland compares QIODevice::readLine() directly against LookAndFeelPackage
+# and overwrites kdedefaults with BreezeDark if a trailing '\n' is present.
+if [ -n "$KWRITECONFIG" ]; then
+    $KWRITECONFIG --file kdeglobals --group General --key ColorScheme "$KDE_COLOR"
+    $KWRITECONFIG --file kdeglobals --group KDE --key widgetStyle "kvantum"
+    $KWRITECONFIG --file kdeglobals --group Icons --key Theme "$ICON_THEME"
+    $KWRITECONFIG --file kcminputrc --group Mouse --key cursorTheme "$CURSOR_THEME"
+    $KWRITECONFIG --file plasmarc --group Theme --key name "$PLASMA_DESKTOP_THEME"
+
+    for kdedef in "$HOME/.config/kdedefaults" "$DOTFILES_DIR/.config/kdedefaults"; do
+        if [ -d "$kdedef" ]; then
+            $KWRITECONFIG --file "$kdedef/kdeglobals" --group General --key ColorScheme "$KDE_COLOR"
+            $KWRITECONFIG --file "$kdedef/kdeglobals" --group KDE --key widgetStyle "kvantum"
+            $KWRITECONFIG --file "$kdedef/kdeglobals" --group Icons --key Theme "$ICON_THEME"
+            $KWRITECONFIG --file "$kdedef/kcminputrc" --group Mouse --key cursorTheme "$CURSOR_THEME"
+            $KWRITECONFIG --file "$kdedef/plasmarc" --group Theme --key name "$PLASMA_DESKTOP_THEME"
+            printf '%s' "org.kde.breezedark.desktop" > "$kdedef/package" 2>/dev/null || true
+        fi
+    done
 fi
 
 # Notify kde-gtk-config via DBus to accept the GTK theme so KDE doesn't fight it

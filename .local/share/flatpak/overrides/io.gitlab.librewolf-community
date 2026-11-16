@@ -1,5 +1,5 @@
 [Context]
-devices=all
+devices=all;
 
 [Session Bus Policy]
 org.kde.plasma.browser.integration=talk
