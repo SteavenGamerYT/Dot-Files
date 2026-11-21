@@ -227,8 +227,34 @@ if [ -d "$DOTFILES_DIR/.local/share/color-schemes" ]; then
     link_target "$DOTFILES_DIR/.local/share/color-schemes" "$HOME/.local/share/color-schemes"
 fi
 
-# Initialize default GTK configurations if missing
+# Initialize default GTK and device-specific environment.d configurations
 if [ "$DRY_RUN" = false ]; then
+    mkdir -p "$DOTFILES_DIR/.config/environment.d"
+    MANGOHUD_PRESET=""
+    case "$(hostname -s 2>/dev/null || hostname 2>/dev/null || true)" in
+        Omar-PC)                              MANGOHUD_PRESET="preset=5" ;;
+        Omar-PC2)                             MANGOHUD_PRESET="preset=6" ;;
+        Omar-GamingLaptop)                    MANGOHUD_PRESET="preset=7" ;;
+        Omar-LaptopPC)                        MANGOHUD_PRESET="preset=8" ;;
+        Hany-GamingLaptop|Hany-GAMINGLAPTOP)  MANGOHUD_PRESET="preset=9" ;;
+        Omar-Laptop)                          MANGOHUD_PRESET="preset=10" ;;
+    esac
+    if [ -n "$MANGOHUD_PRESET" ]; then
+        cat <<EOF > "$DOTFILES_DIR/.config/environment.d/11-pc.conf"
+# ~/.config/environment.d/11-pc.conf
+
+# General environment variables
+MANGOHUD_CONFIG="$MANGOHUD_PRESET"
+EOF
+    elif [ ! -f "$DOTFILES_DIR/.config/environment.d/11-pc.conf" ]; then
+        cat <<'EOF' > "$DOTFILES_DIR/.config/environment.d/11-pc.conf"
+# ~/.config/environment.d/11-pc.conf
+
+# General environment variables
+MANGOHUD_CONFIG="preset=5"
+EOF
+    fi
+
     mkdir -p "$DOTFILES_DIR/.config/gtk-3.0" "$DOTFILES_DIR/.config/gtk-4.0"
     if [ ! -f "$DOTFILES_DIR/.config/gtk-3.0/settings.ini" ]; then
         cat <<'EOF' > "$DOTFILES_DIR/.config/gtk-3.0/settings.ini"

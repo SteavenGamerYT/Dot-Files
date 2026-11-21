@@ -5,6 +5,7 @@ nohup.out
 *.bak
 
 # Application generated / machine-specific configs
+.config/environment.d/11-pc.conf
 .config/ulauncher/user-themes/libadwaita/
 .config/i3/blurred_wallpaper.jpg
 .config/i3/wallpaper.conf
@@ -25,6 +26,7 @@ nohup.out
 .config/gtk-4.0/gtk-dark.css
 
 # Legacy paths (for compatibility)
+DotFiles/.config/environment.d/11-pc.conf
 DotFiles/.config/ulauncher/user-themes/libadwaita/
 DotFiles/.config/i3/blurred_wallpaper.jpg
 DotFiles/.config/i3/wallpaper.conf
